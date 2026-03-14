@@ -1,0 +1,6 @@
+[submodule "litware-dll/external/imgui"]
+	path = litware-dll/external/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "litware-dll/external/minhook"]
+	path = litware-dll/external/minhook
+	url = https://github.com/TsudaKageyu/minhook.git
