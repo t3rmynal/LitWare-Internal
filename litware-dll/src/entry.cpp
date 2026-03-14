@@ -1,0 +1,35 @@
+#include "entry.h"
+#include "bypass.h"
+#include "hooks/render_hook.h"
+#include "debug.h"
+#include <Windows.h>
+
+void entry() {
+    BootstrapLog("[litware] entry() start");
+    DebugLog("[litware] entry() start");
+
+    // Wait for game to be ready (main menu) - injectors often run before Steam overlay loads
+    for (int i = 0; i < 50; ++i) {
+        if (GetModuleHandleA("gameoverlayrenderer64.dll") != nullptr)
+            break;
+        Sleep(200);
+    }
+
+    if (!bypass::Initialize()) {
+        BootstrapLog("[litware] bypass::Initialize failed (non-fatal)");
+        DebugLog("[litware] bypass::Initialize failed (non-fatal)");
+    }
+    for (int attempt = 0; attempt < 3; ++attempt) {
+        if (render_hook::Initialize()) break;
+        BootstrapLog("[litware] render_hook attempt %d failed, retry in 3s", attempt + 1);
+        Sleep(3000);
+        if (attempt == 2) {
+            BootstrapLog("[litware] render_hook::Initialize FAILED after 3 attempts");
+            DebugLog("[litware] render_hook::Initialize FAILED");
+            return;
+        }
+    }
+    BootstrapLog("[litware] SUCCESS - hook active, INSERT for menu");
+    DebugLog("[litware] render_hook::Initialize OK - hook active");
+    bypass::PatchSecureServerFlag();
+}

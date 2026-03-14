@@ -1,0 +1,48 @@
+# Build
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.dll
+*.exe
+bin/
+obj/
+litware-dll/bin/
+litware-dll/obj/
+x64/
+x86/
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+*.lastbuildstate
+*.tlog
+*.log
+
+# IDE
+.vs/
+*.user
+*.suo
+*.sdf
+*.opensdf
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Misc
+*.cache
+Thumbs.db
+Desktop.ini
+txt.txt
+
+# Offsets dumper output (generated, not source)
+offsets/output/
+offsets/*.log
+
+# Old/reference (do not upload to GitHub)
+old/
+examples-old/
+
