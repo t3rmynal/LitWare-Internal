@@ -92,39 +92,39 @@ static Vec3 g_localOrigin{};
 
 static bool g_espEnabled = true;
 static bool g_espOnlyVis = false;
-static int g_espBoxStyle = 0;
+static int g_espBoxStyle = 4;
 static float g_espBoxThick = 1.5f;
-static float g_espEnemyCol[4]{1.f,0.25f,0.25f,1.f};
-static float g_espTeamCol[4]{0.25f,0.55f,1.f,1.f};
-static bool g_espShowTeam = true;
+static float g_espEnemyCol[4]{0.209677f,0.502861f,1.f,1.f};
+static float g_espTeamCol[4]{1.f,0.25f,0.921371f,1.f};
+static bool g_espShowTeam = false;
 static bool g_espName = true;
-static float g_espNameSize = 13.5f;
+static float g_espNameSize = 14.8f;
 static bool g_espHealth = true;
 static bool g_espHealthText = true;   // HP number (Weave style)
 static int g_espHealthPos = 0;
 static int g_espHealthStyle = 0;
-static float g_espHealthGradientCol1[4]{0.2f,0.92f,0.51f,1.f};  // green (full)
+static float g_espHealthGradientCol1[4]{0.56f,0.92f,0.2f,1.f};  // green (full)
 static float g_espHealthGradientCol2[4]{1.f,0.27f,0.27f,1.f};   // red (empty)
 static bool g_espDist = true;
 static float g_espMaxDist = 100.f;
 static bool g_espSkeleton = false;
-static bool g_espLines = false;
+static bool g_espLines = true;
 static int g_espLineAnchor = 1;  // 0=Top 1=Middle 2=Bottom
-static bool g_espOof = false;       // Offscreen arrows (from Pidoraise/Weave)
-static float g_espOofSize = 24.f;
+static bool g_espOof = true;       // Offscreen arrows (from Pidoraise/Weave)
+static float g_espOofSize = 33.f;
 static float g_skeletonThick = 1.1f;
 struct OofEntry { float x, y; float angle; ImU32 col; };  // angle: arrow points toward player
 static OofEntry g_esp_oof[32];
 static int g_esp_oof_count = 0;
-static bool g_espHeadDot = true;
+static bool g_espHeadDot = false;
 static bool g_espSpotted = true;
 static bool g_visCheckEnabled = true;
 static bool g_espWeapon = true;
 static bool g_espWeaponIcon = true;
 static bool g_espAmmo = true;
 static int g_espAmmoStyle = 0;
-static float g_espAmmoCol1[4]{0.02f,0.02f,0.04f,1.f};  // black/dark
-static float g_espAmmoCol2[4]{0.35f,0.55f,1.f,1.f};   // blue
+static float g_espAmmoCol1[4]{0.145098f,0.337255f,0.768627f,1.f};  // dark blue
+static float g_espAmmoCol2[4]{0.329412f,0.803922f,1.f,1.f};   // cyan
 static bool g_espMoney = true;
 static int g_espMoneyPos = 0;  // 0=below box 1=right side
 static float g_espHeadForward = 6.f;
@@ -135,9 +135,9 @@ static bool g_noSmoke = false;
 static bool g_noCrosshair = false;
 static bool g_noLegs = false;
 static DWORD g_lastNoSmokeTick = 0;
-static bool g_glowEnabled = false;
-static float g_glowEnemyCol[4]{1.f,0.18f,0.18f,1.f};
-static float g_glowTeamCol[4]{0.18f,0.5f,1.f,1.f};
+static bool g_glowEnabled = true;
+static float g_glowEnemyCol[4]{0.f,0.225806f,1.f,1.f};
+static float g_glowTeamCol[4]{0.74871f,0.18f,1.f,1.f};
 static float g_glowAlpha = 1.0f;
 static bool g_chamsEnabled = false;
 static bool g_chamsEnemyOnly = true;
@@ -150,9 +150,9 @@ static bool g_chamsScene = true;     // scene-object chams (model tint) via draw
 static bool g_weaponChamsEnabled = false;
 static float g_weaponChamsCol[4]{1.f,0.88f,0.35f,1.f};
 static bool g_aimbotEnabled = false;
-static int g_aimbotKey = VK_LBUTTON;  // LMB default
-static float g_aimbotFov = 5.f;
-static float g_aimbotSmooth = 6.f;
+static int g_aimbotKey = VK_LBUTTON;  // LMB
+static float g_aimbotFov = 9.f;
+static float g_aimbotSmooth = 15.1f;
 static bool g_fovCircleEnabled = false;
 static float g_fovCircleCol[4]{0.4f,0.7f,1.f,0.5f};  // R,G,B,A for FOV circle
 static bool g_aimbotTeamChk = true;
@@ -161,13 +161,13 @@ static int g_aimbotWeaponFilter = 0;  // 0=All 1=Rifles 2=Snipers 3=Pistols
 static bool g_rcsEnabled = false;
 static float g_rcsX = 1.0f;
 static float g_rcsY = 1.0f;
-static float g_rcsSmooth = 6.0f;
+static float g_rcsSmooth = 1.0f;
 static float g_rcsPrevPunchX = 0.f, g_rcsPrevPunchY = 0.f;
 static bool g_tbEnabled = false;
 static int g_tbKey = 0;
 static int g_tbDelay = 50;
 static bool g_tbTeamChk = true;
-static DWORD g_tbFireTime = 0;
+static UINT64 g_tbFireTime = 0;
 static bool g_tbShouldFire = false;
 static bool g_bombDefusing = false;
 static uintptr_t g_bombDefuserPawn = 0;  // pawn who is defusing (for ESP status)
@@ -182,7 +182,7 @@ static bool g_antiAimEnabled = false;
 static int g_antiAimType = 0;  // 0=spin, 1=desync, 2=jitter
 static float g_antiAimSpeed = 180.f;
 static bool g_fovEnabled = false;
-static float g_fovValue = 90.f;
+static float g_fovValue = 121.f;
 static bool g_thirdPerson = false;
 static bool g_autostopEnabled = false;  // stop when shooting for accuracy
 static float g_tpDist = 120.f;
@@ -192,7 +192,7 @@ static int g_snowDensity = 1;
 static bool g_sakuraEnabled = false;
 static float g_sakuraCol[4]{1.f,0.55f,0.7f,0.85f};
 static bool g_starsEnabled = false;
-static bool g_particlesWorld = true;
+static bool g_particlesWorld = false;
 static float g_particlesWorldRadius = 600.f;
 static float g_particlesWorldHeight = 320.f;
 static float g_particlesWorldFloor = 40.f;
@@ -201,20 +201,20 @@ static float g_particlesDepthFade = 0.0022f;
 static bool g_handsColorEnabled = false;
 static float g_handsColor[4]{0.9f,0.9f,0.95f,1.f};
 static bool g_skyColorEnabled = false;
-static float g_skyColor[4]{0.4f,0.5f,0.8f,1.f};
+static float g_skyColor[4]{0.225259f,0.192963f,0.693548f,1.f};
 static bool g_watermarkEnabled = true;
 static bool g_showFpsWatermark = true;
-static bool g_spectatorListEnabled = true;
+static bool g_spectatorListEnabled = false;
 static bool g_hitNotifEnabled = true;
 static bool g_killNotifEnabled = true;
 static bool g_hitSoundEnabled = false;
 static bool g_hitmarkerEnabled = false;
 static float g_hitmarkerDuration = 0.4f;
 static int g_hitmarkerStyle = 0;  // 0=cross 1=X
-static DWORD g_lastHitmarkerTime = 0;
+static UINT64 g_lastHitmarkerTime = 0;
 static bool g_killEffectEnabled = false;
 static float g_killEffectDuration = 0.6f;
-static DWORD g_lastKillEffectTime = 0;
+static UINT64 g_lastKillEffectTime = 0;
 static Vec3 g_lastKillEffectPos{};  // victim head position for kill particles
 static bool g_pendingKillParticles = false;  // spawn 67+LitWare burst on next particle update
 static int g_hitEffectType = 0;   // 0=none 1=cross 2=screen flash 3=circle
@@ -223,18 +223,18 @@ static float g_hitEffectCol[4]{1.f,0.9f,0.2f,0.9f};
 static float g_killEffectCol[4]{1.f,0.3f,0.3f,0.95f};
 static int g_hitSoundType = 1;
 static bool g_radarEnabled = true;  // Overlay radar window (separate from in-game minimap)
-static bool g_radarIngame = true;   // Force spot all for in-game minimap (overlay radar removed)
+static bool g_radarIngame = false;   // Force spot all for in-game minimap (overlay radar removed)
 static float g_radarRange = 2000.f;
 static float g_radarSize = 180.f;
 static bool g_bombTimerEnabled = true;
 static bool g_bulletTraceEnabled = true;
 static float g_impactCol[4]{0.35f,0.94f,0.47f,0.78f};
 static bool g_soundEnabled = true;
-static float g_soundPuddleScale = 1.0f;
-static float g_soundPuddleAlpha = 1.0f;
+static float g_soundPuddleScale = 0.8f;
+static float g_soundPuddleAlpha = 0.2f;
 static bool g_soundBlipEnemy = true;
-static bool g_soundBlipTeam = false;
-static float g_soundBlipCol[4]{1.f, 0.f, 0.f, 1.f};  // red default
+static bool g_soundBlipTeam = true;
+static float g_soundBlipCol[4]{0.f, 0.419355f, 1.f, 1.f};
 static float g_accentColor[4]{0.1f,0.55f,1.0f,1.0f};
 static float g_menuOpacity = 0.96f;
 static float g_uiScale = 1.00f;  // Default UI scale
@@ -243,13 +243,13 @@ static float g_tabAnim[8] = {};
 static float g_toggleAnim[128] = {};
 static float g_tabIndicatorY = 0.f;
 static int g_toggleIdx = 0;
-static bool g_keybindsEnabled = true;
+static bool g_keybindsEnabled = false;
 static bool g_keybindsWindowOpen = false;
 static int g_menuTheme = 0; // 0=Dark Pro, 1=Glassmorphism, 2=Neumorphism
 static float g_themeTransition = 0.f;
 static float g_menuAnim = 0.f;
 static float g_menuAnimSpeed = 12.f;
-static DWORD g_telegramNoteStart = 0;  // Telegram notice: 5s on load
+static UINT64 g_telegramNoteStart = 0;  // Telegram notice: 5s on load
 
 // Skins
 struct SkinOverride{
@@ -397,8 +397,8 @@ static DWORD g_lastSoundPingTick[ESP_MAX_PLAYERS + 1] = {};
 static bool g_visMap[ESP_MAX_PLAYERS + 1] = {};
 // Anti-flicker: stale cache keeps drawing entities for 80ms after they disappear; visibility hysteresis
 static ESPEntry g_esp_stale[ESP_MAX_PLAYERS + 1] = {};
-static DWORD g_esp_stale_tick[ESP_MAX_PLAYERS + 1] = {};
-static DWORD g_visLastTrueTick[ESP_MAX_PLAYERS + 1] = {};
+static UINT64 g_esp_stale_tick[ESP_MAX_PLAYERS + 1] = {};
+static UINT64 g_visLastTrueTick[ESP_MAX_PLAYERS + 1] = {};
 static constexpr DWORD ESP_STALE_MS = 80;
 
 // Math
@@ -598,7 +598,7 @@ static bool GetBonePos(uintptr_t pawn,int bone,Vec3& out){
 
 static void EnsureCalcWorldSpaceBones(){
     if(g_calcWorldSpaceBones) return;
-    DWORD now = GetTickCount();
+    UINT64 now = GetTickCount64();
     if(now - g_lastBoneResolve < 2000) return;
     g_lastBoneResolve = now;
     HMODULE client = GetModuleHandleA("client.dll");
@@ -1488,22 +1488,17 @@ static void BuildESPData(){
         int team=(int)Rd<uint8_t>(pawn+offsets::base_entity::m_iTeamNum);
         int health=Rd<int>(pawn+offsets::base_entity::m_iHealth);if(health<=0)continue;
         bool vis=true;
-        if(g_visCheckEnabled){
-            static int s_visFrame = 0;
-            if((s_visFrame++ % 3) == 0){
+        if(g_visCheckEnabled && i > 0 && i <= ESP_MAX_PLAYERS){
+            if((s_visFrame % 3) == 0){
                 vis=Rd<bool>(pawn+offsets::spotted::m_entitySpottedState+offsets::spotted::m_bSpotted);
-                if(i > 0 && i <= ESP_MAX_PLAYERS) g_visMap[i] = vis;
-            }else if(i > 0 && i <= ESP_MAX_PLAYERS){
-                vis = g_visMap[i];
+                g_visMap[i] = vis;
             }else{
-                vis = true;
+                vis = g_visMap[i];
             }
         }
-        if(i > 0 && i <= ESP_MAX_PLAYERS && g_visCheckEnabled) { /* g_visMap updated above */ }
-        else if(i > 0 && i <= ESP_MAX_PLAYERS) g_visMap[i] = vis;
         // Visibility hysteresis: once visible, stay visible for 80ms to reduce flicker
-        if(i > 0 && i <= ESP_MAX_PLAYERS && vis) g_visLastTrueTick[i] = GetTickCount();
-        DWORD now = GetTickCount();
+        if(i > 0 && i <= ESP_MAX_PLAYERS && vis) g_visLastTrueTick[i] = GetTickCount64();
+        UINT64 now = GetTickCount64();
         bool effVis = vis || (i > 0 && i <= ESP_MAX_PLAYERS && (now - g_visLastTrueTick[i]) < 80);
         if(g_espOnlyVis && !effVis) continue;
         uintptr_t scn=Rd<uintptr_t>(pawn+offsets::base_entity::m_pGameSceneNode);
@@ -1568,7 +1563,7 @@ static void BuildESPData(){
         RdName(namePtr,e.name,sizeof(e.name));
         // Stale cache: keep last-known data for anti-flicker
         g_esp_stale[i] = e;
-        g_esp_stale_tick[i] = GetTickCount();
+        g_esp_stale_tick[i] = GetTickCount64();
     }
 }
 
@@ -1643,46 +1638,122 @@ static void BuildSpectatorList(){
 static void DrawSpectatorList(float sw){
     if(!g_spectatorListEnabled) return;
     if(g_spectatorCount == 0 && !g_weAreSpectating) return;
-    ImDrawList* dl = ImGui::GetForegroundDrawList();
-    if(!dl) return;
-    ImFont* f = font::lexend_bold ? font::lexend_bold : ImGui::GetFont();
-    ImFont* fReg = font::lexend_regular ? font::lexend_regular : ImGui::GetFont();
-    const float pad = 12.f;
-    float y = 15.f;
-    if(g_watermarkEnabled) y += 48.f;
-    ImU32 bgFill = IM_COL32(11, 11, 11, 255);
-    ImU32 stroke = IM_COL32(24, 26, 36, 255);
-    ImU32 accent = IM_COL32((int)(g_accentColor[0]*255), (int)(g_accentColor[1]*255), (int)(g_accentColor[2]*255), 255);
-    ImU32 textCol = IM_COL32(255, 255, 255, 255);
+    ImDrawList* dl = ImGui::GetForegroundDrawList(); if(!dl) return;
+    ImFont* fBold = font::lexend_bold    ? font::lexend_bold    : ImGui::GetFont();
+    ImFont* fReg  = font::lexend_regular ? font::lexend_regular : ImGui::GetFont();
+
+    const float margin  = 15.f;
+    const float padX    = 12.f;
+    const float padY    = 10.f;
+    const float rnd     = 8.f;
+    const float lineH   = 22.f;
+    const float headerH = 30.f;
+
+    float yBase = margin;
+    if(g_watermarkEnabled){
+        // watermark height: approx 34px + margin
+        yBase += 34.f + 8.f;
+    }
+
+    const ImU32 colBg      = IM_COL32(10, 10, 12, 245);
+    const ImU32 colBorder  = IM_COL32(38, 38, 48, 255);
+    const ImU32 colHeader  = IM_COL32(16, 16, 20, 255);
+    const ImU32 colAccent  = IM_COL32((int)(g_accentColor[0]*255),(int)(g_accentColor[1]*255),(int)(g_accentColor[2]*255),255);
+    const ImU32 colAccentD = IM_COL32((int)(g_accentColor[0]*160),(int)(g_accentColor[1]*160),(int)(g_accentColor[2]*160),255);
+    const ImU32 colText    = IM_COL32(215, 220, 230, 255);
+    const ImU32 colDim     = IM_COL32(100, 105, 118, 255);
+    const ImU32 colSep     = IM_COL32(32, 34, 42, 255);
+    const ImU32 colRowHov  = IM_COL32(255, 255, 255, 8);
+
+    // === "Spectating: target" pill — shown when we spectate someone ===
     if(g_weAreSpectating && g_spectatingTarget[0]){
-        char buf[80];
-        std::snprintf(buf, sizeof(buf), "Spectating: %s", g_spectatingTarget);
-        ImVec2 ts = f->CalcTextSizeA(f->LegacySize, FLT_MAX, 0.f, buf);
-        float w = ts.x + pad*2.f; w = (std::max)(w, 120.f);
-        float x = sw - w - 15.f;
-        dl->AddRectFilled({x, y}, {x+w, y+28.f}, bgFill, 6.f);
-        dl->AddRect({x, y}, {x+w, y+28.f}, stroke, 6.f, 0, 1.f);
-        dl->AddText(f, f->LegacySize, {x+pad, y+6.f}, accent, "Spectating:");
-        float nx = x + pad + f->CalcTextSizeA(f->LegacySize, FLT_MAX, 0.f, "Spectating: ").x;
-        dl->AddText(f, f->LegacySize, {nx, y+6.f}, textCol, g_spectatingTarget);
+        ImVec2 szTarget = fReg->CalcTextSizeA(fReg->LegacySize, FLT_MAX, 0.f, g_spectatingTarget);
+        const char* prefix = "WATCHING";
+        ImVec2 szPrefix  = fBold->CalcTextSizeA(fBold->LegacySize, FLT_MAX, 0.f, prefix);
+        float pillW = padX + szPrefix.x + 8.f + szTarget.x + padX;
+        pillW = (std::max)(pillW, 140.f);
+        float pillH = headerH;
+        float px = sw - pillW - margin;
+        float py = yBase;
+        dl->AddRectFilled({px, py}, {px+pillW, py+pillH}, colBg, rnd);
+        dl->AddRect({px, py}, {px+pillW, py+pillH}, colBorder, rnd, 0, 1.f);
+        // accent left bar
+        dl->AddRectFilled({px, py+4.f}, {px+2.f, py+pillH-4.f}, colAccent, 2.f);
+        float midY = py + pillH * 0.5f;
+        dl->AddText(fBold, fBold->LegacySize, {px+padX, midY - szPrefix.y*0.5f}, colAccent, prefix);
+        dl->AddText(fReg,  fReg->LegacySize,  {px+padX+szPrefix.x+8.f, midY - szTarget.y*0.5f}, colText, g_spectatingTarget);
         return;
     }
+
     if(g_spectatorCount <= 0) return;
-    float lineH = 20.f;
-    float boxH = pad*2.f + (float)g_spectatorCount * lineH;
-    float maxW = 80.f;
+
+    // Measure max name width
+    float maxNameW = 60.f;
     for(int i = 0; i < g_spectatorCount; i++){
-        ImVec2 ts = f->CalcTextSizeA(f->LegacySize, FLT_MAX, 0.f, g_spectatorNames[i]);
-        if(ts.x > maxW) maxW = ts.x;
+        ImVec2 ts = fReg->CalcTextSizeA(fReg->LegacySize, FLT_MAX, 0.f, g_spectatorNames[i]);
+        if(ts.x > maxNameW) maxNameW = ts.x;
     }
-    float boxW = maxW + pad*2.f; boxW = (std::max)(boxW, 100.f);
-    float x = sw - boxW - 15.f;
-    dl->AddRectFilled({x, y}, {x+boxW, y+boxH}, bgFill, 6.f);
-    dl->AddRect({x, y}, {x+boxW, y+boxH}, stroke, 6.f, 0, 1.f);
-    dl->AddRectFilled({x+12.f, y+22.f}, {x+boxW-12.f, y+24.f}, accent, 3.f);
-    dl->AddText(f, f->LegacySize, {x+pad, y+4.f}, accent, "Spectators");
+
+    // Header label + count badge
+    const char* hdrLabel = "SPECTATORS";
+    ImVec2 szHdr = fBold->CalcTextSizeA(fBold->LegacySize, FLT_MAX, 0.f, hdrLabel);
+    char cntBuf[8]; std::snprintf(cntBuf, sizeof(cntBuf), "%d", g_spectatorCount);
+    ImVec2 szCnt = fReg->CalcTextSizeA(fReg->LegacySize, FLT_MAX, 0.f, cntBuf);
+    float badgeW = szCnt.x + 10.f;
+    float badgeH = 16.f;
+
+    float boxW = (std::max)(maxNameW + padX*2.f, szHdr.x + padX*2.f + badgeW + 6.f + padX);
+    boxW = (std::max)(boxW, 130.f);
+    float boxH = headerH + 1.f + (float)g_spectatorCount * lineH + padY;
+
+    float x = sw - boxW - margin;
+    float y = yBase;
+
+    // Shadow
+    dl->AddRectFilled({x-3.f, y-3.f}, {x+boxW+3.f, y+boxH+3.f}, IM_COL32(0,0,0,55), rnd+2.f);
+
+    // Main background
+    dl->AddRectFilled({x, y}, {x+boxW, y+boxH}, colBg, rnd);
+
+    // Header background
+    dl->AddRectFilled({x, y}, {x+boxW, y+headerH}, colHeader,
+        rnd, ImDrawFlags_RoundCornersTop);
+
+    // Separator under header
+    dl->AddLine({x+1.f, y+headerH}, {x+boxW-1.f, y+headerH}, colSep, 1.f);
+
+    // Border
+    dl->AddRect({x, y}, {x+boxW, y+boxH}, colBorder, rnd, 0, 1.f);
+
+    // Accent left bar
+    dl->AddRectFilled({x, y+4.f}, {x+2.f, y+boxH-4.f}, colAccent, 2.f);
+
+    // Header text
+    float hMid = y + headerH * 0.5f;
+    dl->AddText(fBold, fBold->LegacySize, {x+padX, hMid - szHdr.y*0.5f}, colAccent, hdrLabel);
+
+    // Count badge (pill)
+    float badgeX = x + boxW - padX - badgeW;
+    float badgeY = hMid - badgeH * 0.5f;
+    dl->AddRectFilled({badgeX, badgeY}, {badgeX+badgeW, badgeY+badgeH}, colAccentD, badgeH*0.5f);
+    dl->AddText(fReg, fReg->LegacySize, {badgeX + (badgeW-szCnt.x)*0.5f, badgeY + (badgeH-szCnt.y)*0.5f}, IM_COL32(255,255,255,230), cntBuf);
+
+    // Entries
     for(int i = 0; i < g_spectatorCount; i++){
-        dl->AddText(fReg, fReg->LegacySize - 1.f, {x+pad, y+pad+18.f+(float)i*lineH}, textCol, g_spectatorNames[i]);
+        float ey = y + headerH + 1.f + (float)i * lineH;
+        float eMid = ey + lineH * 0.5f;
+
+        // Subtle row hover highlight for even rows
+        if(i % 2 == 0)
+            dl->AddRectFilled({x+1.f, ey}, {x+boxW-1.f, ey+lineH}, colRowHov);
+
+        // Index dot
+        char idxBuf[4]; std::snprintf(idxBuf, sizeof(idxBuf), "%d", i+1);
+        ImVec2 szIdx = fReg->CalcTextSizeA(fReg->LegacySize, FLT_MAX, 0.f, idxBuf);
+        dl->AddText(fReg, fReg->LegacySize, {x+padX, eMid - szIdx.y*0.5f}, colDim, idxBuf);
+
+        // Name
+        dl->AddText(fReg, fReg->LegacySize, {x+padX+18.f, eMid - szIdx.y*0.5f}, colText, g_spectatorNames[i]);
     }
 }
 
@@ -1702,7 +1773,7 @@ static void ProcessHitEvents(){
             LogEntry le{}; std::snprintf(le.text,sizeof(le.text),"%s",buf); le.color=IM_COL32(240,180,60,255); le.maxlife=4.f; le.lifetime=4.f; le.type=0;
             g_logs.push_back(le); if(g_logs.size()>8)g_logs.pop_front();
             PlayHitSound(g_hitSoundType);
-            if(g_hitmarkerEnabled) g_lastHitmarkerTime = GetTickCount();
+            if(g_hitmarkerEnabled) g_lastHitmarkerTime = GetTickCount64();
         }
         if(prev > 0 && e.health <= 0){
             char buf[256];
@@ -1711,7 +1782,7 @@ static void ProcessHitEvents(){
             LogEntry le{}; std::snprintf(le.text,sizeof(le.text),"%s",buf); le.color=IM_COL32(140,100,255,255); le.maxlife=4.f; le.lifetime=4.f; le.type=1;
             g_logs.push_back(le); if(g_logs.size()>8)g_logs.pop_front();
             if(g_killEffectEnabled){
-                g_lastKillEffectTime = GetTickCount();
+                g_lastKillEffectTime = GetTickCount64();
                 g_lastKillEffectPos = {e.head_ox, e.head_oy, e.head_oz};
                 g_pendingKillParticles = true;
             }
@@ -1745,7 +1816,7 @@ static void RunNoSmoke(){
         uintptr_t lp=Rd<uintptr_t>(g_client+offsets::client::dwLocalPlayerPawn);
         if(lp&&IsLikelyPtr(lp)) Wr<float>(lp+offsets::cs_pawn_base::m_flLastSmokeOverlayAlpha,0.f);
         // Approach 2: Set entity alpha via ClientAlphaProperty on smoke projectiles
-        DWORD now = GetTickCount();
+        UINT64 now = GetTickCount64();
         if(now - g_lastNoSmokeTick < 100) return;
         g_lastNoSmokeTick = now;
         uintptr_t entityList=Rd<uintptr_t>(g_client+offsets::client::dwEntityList);if(!entityList)return;
@@ -1933,21 +2004,36 @@ static void DrawDebugConsole() {
     ImGui::End();
 }
 
-// Bunnyhop: auto-jump when holding space. In air we release jump so game allows next jump on landing.
+// Bunnyhop: hold jump pressed for several frames after landing so game tick catches it
 static void RunBHop(){
     if(!g_bhopEnabled||!g_client)return;
     if(g_menuOpen) return;
 
+    static bool wasInAir = false;
+    static int holdFrames = 0;
+
+    if(!(GetAsyncKeyState(VK_SPACE)&0x8000)){
+        wasInAir = false;
+        holdFrames = 0;
+        Wr<int>(g_client+offsets::buttons::jump, 256);
+        return;
+    }
+
     uintptr_t lp=Rd<uintptr_t>(g_client+offsets::client::dwLocalPlayerPawn);if(!lp)return;
     uint32_t flags=Rd<uint32_t>(lp+offsets::base_entity::m_fFlags);
     bool onGround = (flags & 1) != 0;
-    
-    if(GetAsyncKeyState(VK_SPACE)&0x8000){
-        if(onGround) {
-            Wr<int>(g_client+offsets::buttons::jump, 65537);  // press
-        } else {
-            Wr<int>(g_client+offsets::buttons::jump, 256);    // release only - key up
-        }
+
+    if(!onGround){
+        wasInAir = true;
+        if(holdFrames == 0)
+            Wr<int>(g_client+offsets::buttons::jump, 256);
+        else
+            holdFrames--;
+    } else if(wasInAir){
+        // Приземлились — держим 65537 несколько кадров чтобы игровой тик поймал
+        Wr<int>(g_client+offsets::buttons::jump, 65537);
+        holdFrames = 3;
+        wasInAir = false;
     }
 }
 
@@ -1970,7 +2056,7 @@ static void RunAntiAim(){
     }
     else if(g_antiAimType == 1){ // Desync (flip between left/right)
         static DWORD desyncTime = 0;
-        DWORD now = GetTickCount();
+        UINT64 now = GetTickCount64();
         if(now - desyncTime > 100){
             antiAimAngle = (antiAimAngle > 0.f) ? -45.f : 45.f;
             desyncTime = now;
@@ -1978,7 +2064,7 @@ static void RunAntiAim(){
         Wr<float>(vaAddr+4, yaw + antiAimAngle);
     }
     else if(g_antiAimType == 2){ // Jitter
-        antiAimAngle = (sinf((float)GetTickCount()*0.01f)*30.f);
+        antiAimAngle = (sinf((float)GetTickCount64()*0.01f)*30.f);
         Wr<float>(vaAddr+4, yaw + antiAimAngle);
     }
 }
@@ -2115,8 +2201,8 @@ static void RunTriggerBot(){
     int targHealth=Rd<int>(targPawn+offsets::base_entity::m_iHealth);
     if(targHealth<=0){g_tbShouldFire=false;return;}
     if(g_tbTeamChk&&targTeam==g_esp_local_team){g_tbShouldFire=false;return;}
-    if(!g_tbShouldFire){g_tbShouldFire=true;g_tbFireTime=GetTickCount()+(DWORD)g_tbDelay;}
-    if(GetTickCount()>=g_tbFireTime){
+    if(!g_tbShouldFire){g_tbShouldFire=true;g_tbFireTime=GetTickCount64()+(UINT64)g_tbDelay;}
+    if(GetTickCount64()>=g_tbFireTime){
         Wr<int>(g_client+offsets::buttons::attack,65537);  // Press
         g_tbShouldFire=false;
         g_tbJustFired=true;
@@ -2340,7 +2426,7 @@ static void DrawBulletTraces(float dt){
 static void UpdateSoundPings(){
     if(!g_soundEnabled||!g_client) return;
     if(!g_soundBlipEnemy && !g_soundBlipTeam) return;
-    DWORD nowTick = GetTickCount();
+    UINT64 nowTick = GetTickCount64();
     for(int i=0;i<g_esp_count;i++){
         const ESPEntry& e = g_esp_players[i];
         if(!e.valid) continue;
@@ -2810,22 +2896,54 @@ static void SmoothScrollCurrentWindow(float speed = 45.f, float damping = 14.f){
 }
 
 static void PidoSection(const char* title){
-    ImGui::PushStyleColor(ImGuiCol_Text, ImGui::ColorConvertU32ToFloat4(g_pido.textDim));
-    ImGui::TextUnformatted(title);
-    ImGui::PopStyleColor();
+    float s = MenuScale();
+    ImVec2 pos = ImGui::GetCursorScreenPos();
+    float width = ImGui::GetContentRegionAvail().x;
+    const float topGap = 10.f * s;
+    const float labelH = 22.f * s;
+    const float totalH = topGap + labelH;
+
+    ImDrawList* dl  = ImGui::GetWindowDrawList();
+    ImFont* fBold   = font::lexend_bold ? font::lexend_bold : ImGui::GetFont();
+
+    float midY = pos.y + topGap + labelH * 0.5f;
+
+    // Left accent bar
+    dl->AddRectFilled({pos.x, pos.y+topGap+3.f*s}, {pos.x+2.5f*s, pos.y+topGap+labelH-3.f*s}, g_pido.accent, 1.5f*s);
+
+    // Label
+    float textY = midY - 5.5f*s;
+    dl->AddText(fBold, 11.f*s, {pos.x+9.f*s, textY}, g_pido.text, title);
+
+    // Right rule with accent fade then dim
+    ImVec2 lSz = fBold->CalcTextSizeA(11.f*s, FLT_MAX, 0.f, title);
+    float lx = pos.x + 11.f*s + lSz.x + 8.f*s;
+    int ar = (int)(g_accentColor[0]*255), ag = (int)(g_accentColor[1]*255), ab = (int)(g_accentColor[2]*255);
+    dl->AddRectFilledMultiColor(
+        {lx, midY-0.5f}, {lx+16.f*s, midY+0.5f},
+        IM_COL32(ar,ag,ab,90), IM_COL32(ar,ag,ab,0), IM_COL32(ar,ag,ab,0), IM_COL32(ar,ag,ab,90));
+    dl->AddRectFilled({lx+16.f*s, midY-0.5f}, {pos.x+width-4.f*s, midY+0.5f}, IM_COL32(45,48,60,60));
+
+    ImGui::Dummy(ImVec2(width, totalH));
 }
 
 static bool BeginPidoChild(const char* id, const ImVec2& size){
     float scale = MenuScale();
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(10.f * scale, 10.f * scale));
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10.f * scale, 10.f * scale));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(10.f * scale, 8.f * scale));
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.f, 3.f * scale));
     bool open = ImGui::BeginChild(id, size, false);
     ImGui::SetWindowFontScale(scale);
     ImDrawList* dl = ImGui::GetWindowDrawList();
     ImVec2 p = ImGui::GetWindowPos();
-    ImVec2 s = ImGui::GetWindowSize();
-    dl->AddRectFilled(p, {p.x+s.x, p.y+s.y}, g_pido.bgFill, 6.f * scale);
-    dl->AddRect(p, {p.x+s.x, p.y+s.y}, IM_COL32(0,0,0,55), 6.f * scale);
+    ImVec2 sw = ImGui::GetWindowSize();
+    const float rnd = 8.f * scale;
+    // Background
+    dl->AddRectFilled(p, {p.x+sw.x, p.y+sw.y}, g_pido.bgFill, rnd);
+    // Border
+    dl->AddRect(p, {p.x+sw.x, p.y+sw.y}, g_pido.elemStroke, rnd, 0, 1.f);
+    // Top accent bar
+    int ac_r = (int)(g_accentColor[0]*255), ac_g = (int)(g_accentColor[1]*255), ac_b = (int)(g_accentColor[2]*255);
+    dl->AddRectFilled({p.x+rnd, p.y}, {p.x+sw.x-rnd, p.y+2.f*scale}, IM_COL32(ac_r,ac_g,ac_b,180), 1.f);
     return open;
 }
 
@@ -2835,36 +2953,69 @@ static void EndPidoChild(){
     ImGui::PopStyleVar(2);
 }
 
-static bool PidoTab(const char* icon, const char* label, const char* desc, bool selected){
+static bool PidoTab(const char* icon, const char* label, const char* desc, bool selected, float forceW = 0.f){
     ImGui::PushID(label);
     float s = MenuScale();
     ImVec2 pos = ImGui::GetCursorScreenPos();
-    ImVec2 size(180.f * s, 50.f * s);
-    ImGui::InvisibleButton("##tab", size);
+    float width = forceW > 0.f ? forceW : ImGui::GetContentRegionAvail().x;
+    float height = 40.f * s;
+    ImGui::InvisibleButton("##tab", ImVec2(width, height));
     bool pressed = ImGui::IsItemClicked();
     bool hovered = ImGui::IsItemHovered();
     ImVec2 nextPos = ImGui::GetCursorScreenPos();
 
+    // Animated state
+    static std::unordered_map<ImGuiID, float> s_tabAnim;
+    ImGuiID tid = ImGui::GetID("##tab_anim");
+    float& anim = s_tabAnim[tid];
+    float target = selected ? 1.f : (hovered ? 0.45f : 0.f);
+    anim = LerpF(anim, target, 1.f - expf(-18.f * ImGui::GetIO().DeltaTime));
+
     ImDrawList* dl = ImGui::GetWindowDrawList();
-    ImU32 bg = selected ? g_pido.tabActive : (hovered ? IM_COL32(18,18,22,255) : IM_COL32(0,0,0,0));
-    if((bg >> 24) != 0) dl->AddRectFilled(pos, {pos.x+size.x, pos.y+size.y}, bg, 4.f * s);
-    if(selected) dl->AddRectFilled({pos.x+3.f*s, pos.y+6.f*s}, {pos.x+5.f*s, pos.y+size.y-6.f*s}, g_pido.accent, 2.f * s);
 
-    ImU32 iconCol = selected ? g_pido.accent : (hovered ? g_pido.textActive : g_pido.textDim);
-    ImU32 textCol = selected ? g_pido.textActive : (hovered ? g_pido.textActive : g_pido.textDim);
-
-    if(font::icomoon){
-        dl->AddText(font::icomoon, 18.f * s, {pos.x+12.f*s, pos.y+size.y*0.5f-9.f*s}, iconCol, icon);
+    // Row fill
+    if(anim > 0.01f){
+        ImU32 bg;
+        if(selected){
+            int ar = (int)(g_accentColor[0]*18+14), ag = (int)(g_accentColor[1]*18+14), ab = (int)(g_accentColor[2]*18+17);
+            bg = IM_COL32(ar, ag, ab, (int)(200 * anim));
+        } else {
+            bg = IM_COL32(20, 22, 28, (int)(160 * anim));
+        }
+        dl->AddRectFilled({pos.x+4.f*s, pos.y+2.f*s}, {pos.x+width-4.f*s, pos.y+height-2.f*s}, bg, 6.f*s);
     }
+
+    // Left accent bar (animated height)
+    if(anim > 0.01f && selected){
+        float barH = (height - 12.f*s) * anim;
+        float barY = pos.y + (height - barH)*0.5f;
+        dl->AddRectFilled({pos.x+4.f*s, barY}, {pos.x+7.f*s, barY+barH}, g_pido.accent, 2.f*s);
+    }
+
+    // Icon + label
+    int ar = (int)(g_accentColor[0]*255), ag = (int)(g_accentColor[1]*255), ab = (int)(g_accentColor[2]*255);
+    ImU32 iconCol = selected ? IM_COL32(ar,ag,ab,255) : (hovered ? g_pido.text : g_pido.textDim);
+    ImU32 textCol = selected ? g_pido.textActive : (hovered ? g_pido.text : g_pido.textDim);
+
+    float midY = pos.y + height * 0.5f;
     ImFont* bold = font::lexend_bold ? font::lexend_bold : ImGui::GetFont();
-    ImFont* reg = font::lexend_regular ? font::lexend_regular : ImGui::GetFont();
+    if(font::icomoon){
+        ImVec2 iSz = font::icomoon->CalcTextSizeA(14.f*s, FLT_MAX, 0.f, icon);
+        dl->AddText(font::icomoon, 14.f*s, {pos.x+16.f*s, midY - iSz.y*0.5f}, iconCol, icon);
+    } else {
+        // Fallback: first letter of label in a small circle
+        char fb[2] = { label[0], '\0' };
+        ImVec2 fbSz = bold->CalcTextSizeA(11.f*s, FLT_MAX, 0.f, fb);
+        float cx = pos.x + 16.f*s + 7.f*s;
+        dl->AddCircleFilled({cx, midY}, 8.f*s, IM_COL32(ar,ag,ab, selected ? 200 : 80), 16);
+        dl->AddText(bold, 11.f*s, {cx - fbSz.x*0.5f, midY - fbSz.y*0.5f}, IM_COL32(255,255,255,selected?255:180), fb);
+    }
     const char* labelEnd = LabelTextEnd(label);
-    float labelY = (desc && desc[0]) ? pos.y+6.f*s : pos.y + (size.y - bold->LegacySize*s)*0.5f;
-    dl->AddText(bold, 14.f * s, {pos.x+36.f*s, labelY}, textCol, label, labelEnd);
-    if(desc && desc[0]) dl->AddText(reg, 12.f * s, {pos.x+36.f*s, pos.y+26.f*s}, g_pido.textDim, desc);
+    ImVec2 lSz = bold->CalcTextSizeA(12.f*s, FLT_MAX, 0.f, label, labelEnd);
+    dl->AddText(bold, 12.f*s, {pos.x+35.f*s, midY - lSz.y*0.5f}, textCol, label, labelEnd);
 
     ImGui::SetCursorScreenPos(nextPos);
-    ImGui::Dummy(ImVec2(0,0));  // satisfy ImGui 1.92 layout: extend boundaries after SetCursorScreenPos
+    ImGui::Dummy(ImVec2(0,0));
     ImGui::PopID();
     return pressed;
 }
@@ -2874,32 +3025,69 @@ static bool PidoToggle(const char* label, const char* desc, bool* v){
     float s = MenuScale();
     ImVec2 pos = ImGui::GetCursorScreenPos();
     float width = ImGui::GetContentRegionAvail().x;
-    float height = 50.f * s;
+    float height = 44.f * s;
     ImGui::InvisibleButton("##row", ImVec2(width, height));
     bool pressed = ImGui::IsItemClicked();
     bool hovered = ImGui::IsItemHovered();
     ImVec2 nextPos = ImGui::GetCursorScreenPos();
     if(pressed) *v = !*v;
 
+    // Animated toggle state
+    static std::unordered_map<ImGuiID, float> s_toggleAnims;
+    ImGuiID tid = ImGui::GetID("##tanim");
+    float& anim = s_toggleAnims[tid];
+    float targetAnim = *v ? 1.f : 0.f;
+    anim = LerpF(anim, targetAnim, 1.f - expf(-18.f * ImGui::GetIO().DeltaTime));
+
     ImDrawList* dl = ImGui::GetWindowDrawList();
-    ImU32 bg = hovered ? IM_COL32(15,17,20,255) : g_pido.elemBg;
-    dl->AddRectFilled(pos, {pos.x+width, pos.y+height}, bg, 4.f * s);
-    dl->AddRect(pos, {pos.x+width, pos.y+height}, g_pido.elemStroke, 4.f * s);
-    if(*v) dl->AddRectFilled({pos.x+3.f*s, pos.y+6.f*s}, {pos.x+5.f*s, pos.y+height-6.f*s}, g_pido.accent, 2.f * s);
+
+    // Row background
+    ImU32 rowBg = hovered
+        ? IM_COL32(20, 22, 28, 255)
+        : g_pido.elemBg;
+    dl->AddRectFilled(pos, {pos.x+width, pos.y+height}, rowBg, 5.f*s);
+    dl->AddRect(pos, {pos.x+width, pos.y+height}, g_pido.elemStroke, 5.f*s, 0, 1.f);
+
+    // Active left accent bar
+    if(anim > 0.01f){
+        float barH = (height - 12.f*s) * anim;
+        float barYOff = (height - barH) * 0.5f;
+        dl->AddRectFilled(
+            {pos.x, pos.y + barYOff},
+            {pos.x + 2.5f*s, pos.y + barYOff + barH},
+            g_pido.accent, 1.5f*s);
+    }
 
     ImFont* bold = font::lexend_bold ? font::lexend_bold : ImGui::GetFont();
-    ImFont* reg = font::lexend_regular ? font::lexend_regular : ImGui::GetFont();
+    ImFont* reg  = font::lexend_regular ? font::lexend_regular : ImGui::GetFont();
     const char* labelEnd = LabelTextEnd(label);
-    float labelY = (desc && desc[0]) ? pos.y+6.f*s : pos.y + (height - bold->LegacySize*s)*0.5f;
-    dl->AddText(bold, 14.f * s, {pos.x+10.f*s, labelY}, g_pido.textActive, label, labelEnd);
-    if(desc && desc[0]) dl->AddText(reg, 12.f * s, {pos.x+10.f*s, pos.y+26.f*s}, g_pido.textDim, desc);
+    float midY = pos.y + height * 0.5f;
+    float labelY = (desc && desc[0]) ? pos.y + 7.f*s : midY - bold->LegacySize*s*0.5f;
+    ImU32 labelCol = *v ? g_pido.textActive : g_pido.text;
+    dl->AddText(bold, 13.f*s, {pos.x+12.f*s, labelY}, labelCol, label, labelEnd);
+    if(desc && desc[0])
+        dl->AddText(reg, 11.f*s, {pos.x+12.f*s, pos.y+25.f*s}, g_pido.textDim, desc);
 
-    float tW = 36.f * s, tH = 18.f * s, r = tH*0.5f;
-    ImVec2 tPos{pos.x+width - tW - 10.f*s, pos.y + (height - tH)*0.5f};
-    ImU32 tBg = *v ? g_pido.accent : IM_COL32(30,30,30,255);
-    dl->AddRectFilled(tPos, {tPos.x+tW, tPos.y+tH}, tBg, r);
-    float knobX = tPos.x + r + (*v ? (tW - tH) : 0.f);
-    dl->AddCircleFilled({knobX, tPos.y + r}, r-2.f, IM_COL32(245,245,250,255), 20);
+    // Toggle pill
+    float tW = 34.f*s, tH = 17.f*s, r = tH*0.5f;
+    ImVec2 tPos{pos.x + width - tW - 10.f*s, midY - tH*0.5f};
+
+    // Interpolated track color: dark -> accent
+    int ar = (int)(g_accentColor[0]*255), ag = (int)(g_accentColor[1]*255), ab = (int)(g_accentColor[2]*255);
+    ImU32 trackCol = IM_COL32(
+        (int)(28 + anim*(ar - 28)),
+        (int)(28 + anim*(ag - 28)),
+        (int)(28 + anim*(ab - 28)),
+        255);
+    dl->AddRectFilled(tPos, {tPos.x+tW, tPos.y+tH}, trackCol, r);
+
+    // Animated knob position
+    float knobTravel = tW - tH;
+    float knobX = tPos.x + r + anim * knobTravel;
+    // Knob shadow
+    dl->AddCircleFilled({knobX, tPos.y + r}, r - 1.f, IM_COL32(0,0,0,60), 20);
+    // Knob
+    dl->AddCircleFilled({knobX, tPos.y + r}, r - 2.f, IM_COL32(248, 250, 255, 255), 20);
 
     ImGui::SetCursorScreenPos(nextPos);
     ImGui::Dummy(ImVec2(0,0));
@@ -2912,41 +3100,71 @@ static bool PidoSliderFloat(const char* label, const char* desc, float* v, float
     float s = MenuScale();
     ImVec2 pos = ImGui::GetCursorScreenPos();
     float width = ImGui::GetContentRegionAvail().x;
-    float height = 50.f * s;
-    ImGui::Dummy(ImVec2(width, height));
+    float height = 44.f * s;
+    ImVec2 bbMin = pos, bbMax{pos.x+width, pos.y+height};
+
+    // Invisible button for mouse interaction
+    ImGui::InvisibleButton("##sliderarea", ImVec2(width, height));
+    bool hovered  = ImGui::IsItemHovered();
+    bool active   = ImGui::IsItemActive();
     ImVec2 nextPos = ImGui::GetCursorScreenPos();
-    ImVec2 bbMin = pos;
-    ImVec2 bbMax{pos.x+width, pos.y+height};
-    bool hovered = ImGui::IsMouseHoveringRect(bbMin, bbMax);
 
+    // Track geometry
+    const float trackRightPad = 10.f*s;
+    const float valW          = 36.f*s;
+    const float trackW        = 90.f*s;
+    const float trackH        = 4.f*s;
+    const float grabR         = 5.f*s;
+    float trackX1 = bbMax.x - trackRightPad - valW - 6.f*s - trackW;
+    float trackX2 = trackX1 + trackW;
+    float trackY  = pos.y + height * 0.5f;
+
+    // Handle drag
+    if(active){
+        float mouseX = ImGui::GetIO().MousePos.x;
+        float t = Clampf((mouseX - trackX1) / trackW, 0.f, 1.f);
+        *v = v_min + t * (v_max - v_min);
+    }
+
+    // Draw
     ImDrawList* dl = ImGui::GetWindowDrawList();
-    ImU32 bg = hovered ? IM_COL32(15,17,20,255) : g_pido.elemBg;
-    dl->AddRectFilled(bbMin, bbMax, bg, 4.f * s);
-    dl->AddRect(bbMin, bbMax, g_pido.elemStroke, 4.f * s);
+    ImU32 rowBg = hovered ? IM_COL32(20,22,28,255) : g_pido.elemBg;
+    dl->AddRectFilled(bbMin, bbMax, rowBg, 5.f*s);
+    dl->AddRect(bbMin, bbMax, hovered ? IM_COL32(50,52,68,255) : g_pido.elemStroke, 5.f*s, 0, 1.f);
 
+    // Label
     ImFont* bold = font::lexend_bold ? font::lexend_bold : ImGui::GetFont();
-    ImFont* reg = font::lexend_regular ? font::lexend_regular : ImGui::GetFont();
+    ImFont* reg  = font::lexend_regular ? font::lexend_regular : ImGui::GetFont();
     const char* labelEnd = LabelTextEnd(label);
-    float labelY = (desc && desc[0]) ? pos.y+6.f*s : pos.y + (height - bold->LegacySize*s)*0.5f;
-    dl->AddText(bold, 14.f * s, {pos.x+10.f*s, labelY}, g_pido.textActive, label, labelEnd);
-    if(desc && desc[0]) dl->AddText(reg, 12.f * s, {pos.x+10.f*s, pos.y+26.f*s}, g_pido.textDim, desc);
+    float midY = pos.y + height * 0.5f;
+    dl->AddText(bold, 13.f*s, {pos.x+12.f*s, midY - 6.5f*s}, g_pido.textActive, label, labelEnd);
 
-    float sliderW = (std::min)(160.f * s, width * 0.45f);
-    ImGui::SetCursorScreenPos({bbMax.x - sliderW - 10.f*s, bbMin.y + (height - 20.f*s)*0.5f});
-    ImGui::PushItemWidth(sliderW);
-    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 4.f * s);
-    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImGui::ColorConvertU32ToFloat4(g_pido.elemBg));
-    ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImGui::ColorConvertU32ToFloat4(g_pido.accent));
-    ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, ImGui::ColorConvertU32ToFloat4(g_pido.accent));
-    bool changed = ImGui::SliderFloat("##slider", v, v_min, v_max, format);
-    ImGui::PopStyleColor(3);
-    ImGui::PopStyleVar();
-    ImGui::PopItemWidth();
+    // Track background (full)
+    dl->AddRectFilled({trackX1, trackY - trackH*0.5f}, {trackX2, trackY + trackH*0.5f}, IM_COL32(30,32,42,255), trackH*0.5f);
+
+    // Track fill (accent)
+    float t = Clampf((*v - v_min) / (v_max - v_min), 0.f, 1.f);
+    float fillX = trackX1 + t * trackW;
+    if(fillX > trackX1)
+        dl->AddRectFilled({trackX1, trackY - trackH*0.5f}, {fillX, trackY + trackH*0.5f}, g_pido.accent, trackH*0.5f);
+
+    // Grab handle
+    ImU32 grabCol = active ? g_pido.accent : IM_COL32(240,242,250,255);
+    dl->AddCircleFilled({fillX, trackY}, grabR + 1.f*s, IM_COL32(0,0,0,60), 16); // shadow
+    dl->AddCircleFilled({fillX, trackY}, grabR, grabCol, 16);
+    if(active) dl->AddCircle({fillX, trackY}, grabR, g_pido.accent, 16, 1.5f);
+
+    // Value text
+    char valBuf[32]; std::snprintf(valBuf, sizeof(valBuf), format, *v);
+    ImVec2 valSz = reg->CalcTextSizeA(11.f*s, FLT_MAX, 0.f, valBuf);
+    float valX = bbMax.x - trackRightPad - valSz.x;
+    dl->AddText(reg, 11.f*s, {valX, midY - valSz.y*0.5f},
+        hovered ? g_pido.textActive : g_pido.textDim, valBuf);
 
     ImGui::SetCursorScreenPos(nextPos);
     ImGui::Dummy(ImVec2(0,0));
     ImGui::PopID();
-    return changed;
+    return active;
 }
 
 static bool PidoSliderInt(const char* label, const char* desc, int* v, int v_min, int v_max, const char* format = "%d"){
@@ -2954,41 +3172,56 @@ static bool PidoSliderInt(const char* label, const char* desc, int* v, int v_min
     float s = MenuScale();
     ImVec2 pos = ImGui::GetCursorScreenPos();
     float width = ImGui::GetContentRegionAvail().x;
-    float height = 50.f * s;
-    ImGui::Dummy(ImVec2(width, height));
+    float height = 44.f * s;
+    ImVec2 bbMin = pos, bbMax{pos.x+width, pos.y+height};
+
+    ImGui::InvisibleButton("##sliderarea", ImVec2(width, height));
+    bool hovered = ImGui::IsItemHovered();
+    bool active  = ImGui::IsItemActive();
     ImVec2 nextPos = ImGui::GetCursorScreenPos();
-    ImVec2 bbMin = pos;
-    ImVec2 bbMax{pos.x+width, pos.y+height};
-    bool hovered = ImGui::IsMouseHoveringRect(bbMin, bbMax);
+
+    const float trackRightPad = 10.f*s, valW = 36.f*s, trackW = 90.f*s;
+    const float trackH = 4.f*s, grabR = 5.f*s;
+    float trackX1 = bbMax.x - trackRightPad - valW - 6.f*s - trackW;
+    float trackX2 = trackX1 + trackW;
+    float trackY  = pos.y + height * 0.5f;
+
+    if(active){
+        float t = Clampf((ImGui::GetIO().MousePos.x - trackX1) / trackW, 0.f, 1.f);
+        *v = v_min + (int)(t * (float)(v_max - v_min) + 0.5f);
+    }
 
     ImDrawList* dl = ImGui::GetWindowDrawList();
-    ImU32 bg = hovered ? IM_COL32(15,17,20,255) : g_pido.elemBg;
-    dl->AddRectFilled(bbMin, bbMax, bg, 4.f * s);
-    dl->AddRect(bbMin, bbMax, g_pido.elemStroke, 4.f * s);
+    ImU32 rowBg = hovered ? IM_COL32(20,22,28,255) : g_pido.elemBg;
+    dl->AddRectFilled(bbMin, bbMax, rowBg, 5.f*s);
+    dl->AddRect(bbMin, bbMax, hovered ? IM_COL32(50,52,68,255) : g_pido.elemStroke, 5.f*s, 0, 1.f);
 
     ImFont* bold = font::lexend_bold ? font::lexend_bold : ImGui::GetFont();
-    ImFont* reg = font::lexend_regular ? font::lexend_regular : ImGui::GetFont();
+    ImFont* reg  = font::lexend_regular ? font::lexend_regular : ImGui::GetFont();
     const char* labelEnd = LabelTextEnd(label);
-    float labelY = (desc && desc[0]) ? pos.y+6.f*s : pos.y + (height - bold->LegacySize*s)*0.5f;
-    dl->AddText(bold, 14.f * s, {pos.x+10.f*s, labelY}, g_pido.textActive, label, labelEnd);
-    if(desc && desc[0]) dl->AddText(reg, 12.f * s, {pos.x+10.f*s, pos.y+26.f*s}, g_pido.textDim, desc);
+    float midY = pos.y + height * 0.5f;
+    dl->AddText(bold, 13.f*s, {pos.x+12.f*s, midY - 6.5f*s}, g_pido.textActive, label, labelEnd);
 
-    float sliderW = (std::min)(160.f * s, width * 0.45f);
-    ImGui::SetCursorScreenPos({bbMax.x - sliderW - 10.f*s, bbMin.y + (height - 20.f*s)*0.5f});
-    ImGui::PushItemWidth(sliderW);
-    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 4.f * s);
-    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImGui::ColorConvertU32ToFloat4(g_pido.elemBg));
-    ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImGui::ColorConvertU32ToFloat4(g_pido.accent));
-    ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, ImGui::ColorConvertU32ToFloat4(g_pido.accent));
-    bool changed = ImGui::SliderInt("##slider", v, v_min, v_max, format);
-    ImGui::PopStyleColor(3);
-    ImGui::PopStyleVar();
-    ImGui::PopItemWidth();
+    dl->AddRectFilled({trackX1, trackY-trackH*0.5f}, {trackX2, trackY+trackH*0.5f}, IM_COL32(30,32,42,255), trackH*0.5f);
+    float t = Clampf((float)(*v - v_min)/(float)(v_max - v_min), 0.f, 1.f);
+    float fillX = trackX1 + t * trackW;
+    if(fillX > trackX1)
+        dl->AddRectFilled({trackX1, trackY-trackH*0.5f}, {fillX, trackY+trackH*0.5f}, g_pido.accent, trackH*0.5f);
+
+    ImU32 grabCol = active ? g_pido.accent : IM_COL32(240,242,250,255);
+    dl->AddCircleFilled({fillX, trackY}, grabR+1.f*s, IM_COL32(0,0,0,60), 16);
+    dl->AddCircleFilled({fillX, trackY}, grabR, grabCol, 16);
+    if(active) dl->AddCircle({fillX, trackY}, grabR, g_pido.accent, 16, 1.5f);
+
+    char valBuf[32]; std::snprintf(valBuf, sizeof(valBuf), format, *v);
+    ImVec2 valSz = reg->CalcTextSizeA(11.f*s, FLT_MAX, 0.f, valBuf);
+    dl->AddText(reg, 11.f*s, {bbMax.x - trackRightPad - valSz.x, midY - valSz.y*0.5f},
+        hovered ? g_pido.textActive : g_pido.textDim, valBuf);
 
     ImGui::SetCursorScreenPos(nextPos);
     ImGui::Dummy(ImVec2(0,0));
     ImGui::PopID();
-    return changed;
+    return active;
 }
 
 static bool PidoCombo(const char* label, const char* desc, int* current_item, const char* const items[], int items_count){
@@ -2996,37 +3229,92 @@ static bool PidoCombo(const char* label, const char* desc, int* current_item, co
     float s = MenuScale();
     ImVec2 pos = ImGui::GetCursorScreenPos();
     float width = ImGui::GetContentRegionAvail().x;
-    float height = 50.f * s;
-    ImGui::Dummy(ImVec2(width, height));
-    ImVec2 nextPos = ImGui::GetCursorScreenPos();
-    ImVec2 bbMin = pos;
-    ImVec2 bbMax{pos.x+width, pos.y+height};
-    bool hovered = ImGui::IsMouseHoveringRect(bbMin, bbMax);
+    float height = 44.f * s;
 
+    // Full-row invisible button
+    ImGui::InvisibleButton("##row", ImVec2(width, height));
+    bool rowHovered  = ImGui::IsItemHovered();
+    bool rowClicked  = ImGui::IsItemClicked();
+    ImVec2 nextPos   = ImGui::GetCursorScreenPos();
+
+    ImVec2 bbMin = pos, bbMax{pos.x+width, pos.y+height};
     ImDrawList* dl = ImGui::GetWindowDrawList();
-    ImU32 bg = hovered ? IM_COL32(15,17,20,255) : g_pido.elemBg;
-    dl->AddRectFilled(bbMin, bbMax, bg, 4.f * s);
-    dl->AddRect(bbMin, bbMax, g_pido.elemStroke, 4.f * s);
+
+    // Row background
+    ImU32 rowBg = rowHovered ? IM_COL32(20,22,28,255) : g_pido.elemBg;
+    dl->AddRectFilled(bbMin, bbMax, rowBg, 5.f*s);
+    dl->AddRect(bbMin, bbMax, rowHovered ? IM_COL32(50,52,68,255) : g_pido.elemStroke, 5.f*s, 0, 1.f);
 
     ImFont* bold = font::lexend_bold ? font::lexend_bold : ImGui::GetFont();
-    ImFont* reg = font::lexend_regular ? font::lexend_regular : ImGui::GetFont();
+    ImFont* reg  = font::lexend_regular ? font::lexend_regular : ImGui::GetFont();
     const char* labelEnd = LabelTextEnd(label);
-    float labelY = (desc && desc[0]) ? pos.y+6.f*s : pos.y + (height - bold->LegacySize*s)*0.5f;
-    dl->AddText(bold, 14.f * s, {pos.x+10.f*s, labelY}, g_pido.textActive, label, labelEnd);
-    if(desc && desc[0]) dl->AddText(reg, 12.f * s, {pos.x+10.f*s, pos.y+26.f*s}, g_pido.textDim, desc);
+    float midY = pos.y + height * 0.5f;
+    dl->AddText(bold, 13.f*s, {pos.x+12.f*s, midY - 6.5f*s}, g_pido.textActive, label, labelEnd);
 
-    float comboW = (std::min)(170.f * s, width * 0.5f);
-    ImGui::SetCursorScreenPos({bbMax.x - comboW - 10.f*s, bbMin.y + (height - 24.f*s)*0.5f});
-    ImGui::PushItemWidth(comboW);
-    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 4.f * s);
-    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImGui::ColorConvertU32ToFloat4(g_pido.elemBg));
-    ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(18.f/255.f,18.f/255.f,18.f/255.f,0.95f));
-    ImGui::PushStyleColor(ImGuiCol_Header, ImGui::ColorConvertU32ToFloat4(g_pido.tabActive));
-    ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImGui::ColorConvertU32ToFloat4(g_pido.accent));
-    bool changed = ImGui::Combo("##combo", current_item, items, items_count);
-    ImGui::PopStyleColor(4);
-    ImGui::PopStyleVar();
-    ImGui::PopItemWidth();
+    // Right-side chip showing current selection
+    const char* curItem = (*current_item >= 0 && *current_item < items_count) ? items[*current_item] : "";
+    const float chipPadX = 8.f*s, chipPadY = 3.f*s, chipRnd = 4.f*s, arrowW = 10.f*s;
+    ImVec2 chipSz = reg->CalcTextSizeA(11.f*s, FLT_MAX, 0.f, curItem);
+    float chipW = chipSz.x + chipPadX*2.f + arrowW + 4.f*s;
+    float chipH = chipSz.y + chipPadY*2.f;
+    float chipX = bbMax.x - chipW - 10.f*s;
+    float chipY = midY - chipH*0.5f;
+    dl->AddRectFilled({chipX, chipY}, {chipX+chipW, chipY+chipH}, IM_COL32(22,24,32,255), chipRnd);
+    dl->AddRect({chipX, chipY}, {chipX+chipW, chipY+chipH}, g_pido.elemStroke, chipRnd, 0, 1.f);
+    dl->AddText(reg, 11.f*s, {chipX+chipPadX, chipY+chipPadY}, g_pido.text, curItem);
+
+    // Open popup on row click
+    const char* popupId = "##pido_combo_popup";
+    if(rowClicked) ImGui::OpenPopup(popupId);
+    bool popup_open = ImGui::IsPopupOpen(popupId);
+
+    // Chevron (flips when open)
+    float ax = chipX + chipW - arrowW*0.5f - 2.f*s;
+    if(popup_open)
+        dl->AddTriangleFilled({ax-3.f*s,midY+2.f*s},{ax+3.f*s,midY+2.f*s},{ax,midY-2.f*s}, g_pido.textDim);
+    else
+        dl->AddTriangleFilled({ax-3.f*s,midY-2.f*s},{ax+3.f*s,midY-2.f*s},{ax,midY+2.f*s}, g_pido.textDim);
+
+    // Popup
+    ImGui::SetNextWindowPos({pos.x, bbMax.y + 2.f*s});
+    ImGui::SetNextWindowSize({width, 0.f});
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5.f*s, 5.f*s));
+    ImGui::PushStyleVar(ImGuiStyleVar_PopupRounding, 4.f*s);
+    ImGui::PushStyleVar(ImGuiStyleVar_PopupBorderSize, 1.f);
+    ImGui::PushStyleColor(ImGuiCol_PopupBg, IM_COL32(40, 40, 40, 245));
+    ImGui::PushStyleColor(ImGuiCol_Border,  IM_COL32(55, 55, 65, 255));
+
+    bool changed = false;
+    if(ImGui::BeginPopup(popupId)){
+        const float lineH = reg->LegacySize + 8.f*s;
+        for(int i = 0; i < items_count; i++){
+            ImGui::PushID(i);
+            bool selected = (*current_item == i);
+            ImVec2 ipos = ImGui::GetCursorScreenPos();
+            float iw = ImGui::GetContentRegionAvail().x;
+            ImGui::InvisibleButton("##item", ImVec2(iw, lineH));
+            bool iHov = ImGui::IsItemHovered();
+            if(ImGui::IsItemClicked()){
+                *current_item = i;
+                changed = true;
+                ImGui::CloseCurrentPopup();
+            }
+            ImDrawList* pdl = ImGui::GetWindowDrawList();
+            if(selected){
+                int ar = (int)(g_accentColor[0]*50), ag = (int)(g_accentColor[1]*50), ab = (int)(g_accentColor[2]*50);
+                pdl->AddRectFilled(ipos, {ipos.x+iw, ipos.y+lineH}, IM_COL32(ar,ag,ab,200), 3.f*s);
+            } else if(iHov){
+                pdl->AddRectFilled(ipos, {ipos.x+iw, ipos.y+lineH}, IM_COL32(55,55,65,200), 3.f*s);
+            }
+            ImU32 itemCol = selected ? g_pido.accent : (iHov ? g_pido.textActive : g_pido.text);
+            pdl->AddText(reg, reg->LegacySize, {ipos.x + 5.f*s, ipos.y + (lineH - reg->LegacySize)*0.5f}, itemCol, items[i]);
+            ImGui::PopID();
+        }
+        ImGui::EndPopup();
+    }
+
+    ImGui::PopStyleColor(2);
+    ImGui::PopStyleVar(3);
 
     ImGui::SetCursorScreenPos(nextPos);
     ImGui::Dummy(ImVec2(0,0));
@@ -3039,31 +3327,44 @@ static bool PidoColorEdit4(const char* label, const char* desc, float col[4], Im
     float s = MenuScale();
     ImVec2 pos = ImGui::GetCursorScreenPos();
     float width = ImGui::GetContentRegionAvail().x;
-    float height = 50.f * s;
-    ImGui::Dummy(ImVec2(width, height));
-    ImVec2 nextPos = ImGui::GetCursorScreenPos();
-    ImVec2 bbMin = pos;
-    ImVec2 bbMax{pos.x+width, pos.y+height};
+    float height = 44.f * s;
+    ImVec2 bbMin = pos, bbMax{pos.x+width, pos.y+height};
     bool hovered = ImGui::IsMouseHoveringRect(bbMin, bbMax);
 
     ImDrawList* dl = ImGui::GetWindowDrawList();
-    ImU32 bg = hovered ? IM_COL32(15,17,20,255) : g_pido.elemBg;
-    dl->AddRectFilled(bbMin, bbMax, bg, 4.f * s);
-    dl->AddRect(bbMin, bbMax, g_pido.elemStroke, 4.f * s);
+    ImU32 rowBg = hovered ? IM_COL32(20,22,28,255) : g_pido.elemBg;
+    dl->AddRectFilled(bbMin, bbMax, rowBg, 5.f*s);
+    dl->AddRect(bbMin, bbMax, hovered ? IM_COL32(50,52,68,255) : g_pido.elemStroke, 5.f*s, 0, 1.f);
 
     ImFont* bold = font::lexend_bold ? font::lexend_bold : ImGui::GetFont();
-    ImFont* reg = font::lexend_regular ? font::lexend_regular : ImGui::GetFont();
     const char* labelEnd = LabelTextEnd(label);
-    float labelY = (desc && desc[0]) ? pos.y+6.f*s : pos.y + (height - bold->LegacySize*s)*0.5f;
-    dl->AddText(bold, 14.f * s, {pos.x+10.f*s, labelY}, g_pido.textActive, label, labelEnd);
-    if(desc && desc[0]) dl->AddText(reg, 12.f * s, {pos.x+10.f*s, pos.y+26.f*s}, g_pido.textDim, desc);
+    float midY = pos.y + height * 0.5f;
+    dl->AddText(bold, 13.f*s, {pos.x+12.f*s, midY - 6.5f*s}, g_pido.textActive, label, labelEnd);
 
-    ImGui::SetCursorScreenPos({bbMax.x - 46.f*s, bbMin.y + (height - 22.f*s)*0.5f});
-    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 4.f * s);
+    // Color swatch — larger, with checkerboard for alpha, rounded
+    const float swW = 36.f*s, swH = 20.f*s, swRnd = 4.f*s;
+    float swX = bbMax.x - swW - 10.f*s;
+    float swY = midY - swH*0.5f;
+    // Checkerboard pattern for transparency
+    ImU32 chk1 = IM_COL32(60,60,60,255), chk2 = IM_COL32(40,40,40,255);
+    float half = swW*0.5f;
+    dl->AddRectFilled({swX,swY},{swX+half,swY+swH*0.5f}, chk1, 0); // top-left
+    dl->AddRectFilled({swX+half,swY},{swX+swW,swY+swH*0.5f}, chk2, 0); // top-right
+    dl->AddRectFilled({swX,swY+swH*0.5f},{swX+half,swY+swH}, chk2, 0); // bot-left
+    dl->AddRectFilled({swX+half,swY+swH*0.5f},{swX+swW,swY+swH}, chk1, 0); // bot-right
+    // Color overlay
+    dl->AddRectFilled({swX,swY},{swX+swW,swY+swH}, IM_COL32((int)(col[0]*255),(int)(col[1]*255),(int)(col[2]*255),(int)(col[3]*255)), swRnd);
+    dl->AddRect({swX,swY},{swX+swW,swY+swH}, g_pido.elemStroke, swRnd, 0, 1.f);
+
+    ImGui::SetCursorScreenPos({swX, swY});
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, swRnd);
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0,0));
+    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0,0,0,0));
     bool changed = ImGui::ColorEdit4("##col", col, flags | ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel);
-    ImGui::PopStyleVar();
+    ImGui::PopStyleColor();
+    ImGui::PopStyleVar(2);
 
-    ImGui::SetCursorScreenPos(nextPos);
+    ImGui::SetCursorScreenPos({pos.x, bbMax.y});
     ImGui::Dummy(ImVec2(0,0));
     ImGui::PopID();
     return changed;
@@ -3308,47 +3609,81 @@ static void DrawMenu(){
 
     const float s = menuScale;
     ImGui::SetWindowFontScale(s);
-    const float sidebarW = 200.f * s;
-    const float menuRounding = 8.f * s;
-    const float pad = 10.f * s;
-    const float headerH = 56.f * s;
+    const float sidebarW    = 190.f * s;
+    const float menuRounding = 10.f * s;
+    const float pad          = 12.f * s;
+    const float headerH      = 52.f * s;
 
+    // Outer shadow — 3 passes only
     dl->PushClipRectFullScreen();
-    float shadowBase = 80.f * g_menuAnim;
-    for(int i=1;i<=4;i++){
-        float spread = i * 6.f * s;
-        ImU32 shCol = IM_COL32(0,0,0,(int)(shadowBase/(float)i));
-        dl->AddRectFilled({pos.x-spread, pos.y-spread}, {pos.x+size.x+spread, pos.y+size.y+spread}, shCol, menuRounding + spread);
+    for(int i=1;i<=3;i++){
+        float spread = i * 5.f * s;
+        dl->AddRectFilled({pos.x-spread, pos.y-spread}, {pos.x+size.x+spread, pos.y+size.y+spread},
+            IM_COL32(0,0,0,(int)(55.f*g_menuAnim/(float)i)), menuRounding + spread);
     }
     dl->PopClipRect();
 
+    // Main bg
     dl->AddRectFilled(pos, {pos.x+size.x, pos.y+size.y}, g_pido.bgFill, menuRounding);
+
+    // Sidebar bg
     dl->AddRectFilled(pos, {pos.x+sidebarW, pos.y+size.y}, g_pido.tabBg, menuRounding, ImDrawFlags_RoundCornersLeft);
-    dl->AddLine({pos.x+sidebarW, pos.y}, {pos.x+sidebarW, pos.y+size.y}, g_pido.bgStroke, 1.f);
-    dl->AddRect(pos, {pos.x+size.x, pos.y+size.y}, g_pido.bgStroke, menuRounding);
 
-    // Sidebar header with accent
-    dl->AddRectFilled(pos, {pos.x+sidebarW, pos.y+headerH}, g_pido.tabActive, menuRounding, ImDrawFlags_RoundCornersTopLeft);
-    dl->AddRectFilledMultiColor({pos.x+sidebarW, pos.y}, {pos.x+size.x, pos.y+headerH},
-        IM_COL32(255,255,255,(int)(18*g_menuAnim)), IM_COL32(255,255,255,(int)(8*g_menuAnim)),
-        IM_COL32(0,0,0,0), IM_COL32(0,0,0,0));
-    dl->AddRectFilled({pos.x+12.f*s, pos.y+headerH-3.f*s}, {pos.x+sidebarW-12.f*s, pos.y+headerH-1.f*s}, g_pido.accent, 3.f*s);
+    // Outer border
+    dl->AddRect(pos, {pos.x+size.x, pos.y+size.y}, g_pido.bgStroke, menuRounding, 0, 1.f);
 
+    // Sidebar / content divider
+    dl->AddLine({pos.x+sidebarW, pos.y+menuRounding}, {pos.x+sidebarW, pos.y+size.y-menuRounding}, g_pido.elemStroke, 1.f);
+
+    // Header area overlay (subtle darken on top bar)
+    dl->AddRectFilled(pos, {pos.x+size.x, pos.y+headerH},
+        IM_COL32(0,0,0,(int)(28*g_menuAnim)), menuRounding, ImDrawFlags_RoundCornersTop);
+
+    // Header bottom separator
+    dl->AddLine({pos.x+menuRounding, pos.y+headerH}, {pos.x+size.x-menuRounding, pos.y+headerH}, g_pido.elemStroke, 1.f);
+
+    // Accent underline on sidebar header only
+    int ac_r = (int)(g_accentColor[0]*255), ac_g = (int)(g_accentColor[1]*255), ac_b = (int)(g_accentColor[2]*255);
+    dl->AddRectFilled({pos.x+menuRounding, pos.y+headerH-2.f*s}, {pos.x+sidebarW, pos.y+headerH},
+        IM_COL32(ac_r,ac_g,ac_b,(int)(200*g_menuAnim)), 0);
+
+    // Logo
     if(font::lexend_bold){
-        dl->AddText(font::lexend_bold, 22.f*s, {pos.x+16.f*s, pos.y+10.f*s}, g_pido.accent, "LITWARE");
+        ImFont* fReg  = font::lexend_regular ? font::lexend_regular : font::lexend_bold;
+        float logoX = pos.x + 15.f*s;
+        float nameY = pos.y + (headerH - 18.f*s) * 0.5f - 2.f*s;
+        // Accent square marker
+        float dotSz = 5.f*s;
+        dl->AddRectFilled({logoX, nameY + (18.f*s-dotSz)*0.5f}, {logoX+dotSz, nameY + (18.f*s+dotSz)*0.5f}, g_pido.accent, 1.5f*s);
+        // Name
+        dl->AddText(font::lexend_bold, 18.f*s, {logoX+dotSz+7.f*s, nameY}, g_pido.textActive, "LITWARE");
+        // Subtitle
+        ImVec2 nameSz = font::lexend_bold->CalcTextSizeA(18.f*s, FLT_MAX, 0.f, "LITWARE");
+        dl->AddText(fReg, 9.f*s, {logoX+dotSz+7.f*s, nameY+nameSz.y+1.f*s},
+            IM_COL32(ac_r,ac_g,ac_b,(int)(160*g_menuAnim)), "internal");
     }
 
     ImGui::SetCursorPos({6.f*s, headerH + 6.f*s});
     ImGui::BeginGroup();
-    // Order: Aimbot, Visuals, World, Skins, Misc. Icons: Aimbot=crosshair(c), Visuals=eye(b), World=flask(f)
     const char* tabLabels[] = {"Aimbot","Visuals","World","Skins","Misc"};
     const char* tabDescs[] = {"","","","",""};
-    static const char tabIcons[] = { 'c', 'b', 'f', 'o', 'e' };  // Aimbot=crosshair, Visuals=eye, World=flask
+    // icomoon ASCII map: c=crosshair, b=eye, f=flask, o=skin, e=cog
+    static const char tabIconChars[] = { 'c', 'b', 'f', 'o', 'e' };
+    float tabW = sidebarW - 8.f*s;
     for(int i=0;i<5;++i){
-        char iconBuf[2] = { tabIcons[i], '\0' };
-        if(PidoTab(iconBuf, tabLabels[i], tabDescs[i], page==i)) page = i;
+        char iconBuf[2] = { tabIconChars[i], '\0' };
+        if(PidoTab(iconBuf, tabLabels[i], tabDescs[i], page==i, tabW)) page = i;
     }
     ImGui::EndGroup();
+
+    // Sidebar footer
+    {
+        ImFont* fReg = font::lexend_regular ? font::lexend_regular : ImGui::GetFont();
+        const char* hint = "INSERT  \xc2\xb7  toggle";
+        ImVec2 hSz = fReg->CalcTextSizeA(9.f*s, FLT_MAX, 0.f, hint);
+        dl->AddText(fReg, 9.f*s, {pos.x + (sidebarW - hSz.x)*0.5f, pos.y + size.y - 16.f*s},
+            IM_COL32(80,85,100,(int)(100*g_menuAnim)), hint);
+    }
 
     tabAlpha = LerpF(tabAlpha, (page==g_activeTab)?1.f:0.f, io.DeltaTime*15.f);
     if(tabAlpha < 0.01f) g_activeTab = page;
@@ -3484,16 +3819,13 @@ static void DrawMenu(){
         int selId = kSkinWeaponIds[g_skinSelectedWeapon];
         WeaponInfo selInfo = WeaponInfoForId(selId);
         const char* preview = selInfo.name ? selInfo.name : "Weapon";
-        if(ImGui::BeginCombo("Weapon", preview, ImGuiComboFlags_None)){
+        {
+            static const char* s_wnames[35];
             for(int i = 0; i < weaponCount; i++){
-                int wid = kSkinWeaponIds[i];
-                WeaponInfo wi = WeaponInfoForId(wid);
-                const char* wname = wi.name ? wi.name : "Weapon";
-                bool selected = (g_skinSelectedWeapon == i);
-                if(ImGui::Selectable(wname, selected)) g_skinSelectedWeapon = i;
-                if(selected) ImGui::SetItemDefaultFocus();
+                WeaponInfo wi = WeaponInfoForId(kSkinWeaponIds[i]);
+                s_wnames[i] = wi.name ? wi.name : "Weapon";
             }
-            ImGui::EndCombo();
+            PidoCombo("Weapon##skin", "", &g_skinSelectedWeapon, s_wnames, weaponCount);
         }
         static int s_lastWeaponId = -1;
         if(selId != s_lastWeaponId){
@@ -3528,7 +3860,14 @@ static void DrawMenu(){
             g_skinOverrides.clear();
             g_skinForceUpdate = true;
         }
-        ImGui::TextDisabled("Overrides: %d", (int)g_skinOverrides.size());
+        {
+            char overrideBuf[32]; std::snprintf(overrideBuf, sizeof(overrideBuf), "Overrides: %d", (int)g_skinOverrides.size());
+            float s2 = MenuScale();
+            ImFont* reg2 = font::lexend_regular ? font::lexend_regular : ImGui::GetFont();
+            ImVec2 p2 = ImGui::GetCursorScreenPos();
+            ImGui::Dummy(ImVec2(ImGui::GetContentRegionAvail().x, 18.f*s2));
+            ImGui::GetWindowDrawList()->AddText(reg2, 11.f*s2, {p2.x+10.f*s2, p2.y+2.f*s2}, g_pido.textDim, overrideBuf);
+        }
         EndPidoChild();
     }else if(g_activeTab==4){
         static int s_lastConfigTabFrame = -1;
@@ -3563,24 +3902,24 @@ static void DrawMenu(){
         PidoInputText("Config name","", g_configName, sizeof(g_configName));
         static int g_configListSel = -1;
         const char* cfgPreview = g_configList.empty() ? "(no configs)" : (g_configListSel >= 0 && g_configListSel < (int)g_configList.size() ? g_configList[g_configListSel].c_str() : "Select config...");
-        if(ImGui::BeginCombo("Config list", cfgPreview, ImGuiComboFlags_None)){
-            for(size_t i = 0; i < g_configList.size(); ++i){
-                bool sel = (g_configListSel == (int)i);
-                if(ImGui::Selectable(g_configList[i].c_str(), sel)){
-                    g_configListSel = (int)i;
-                    strncpy_s(g_configName, sizeof(g_configName), g_configList[i].c_str(), _TRUNCATE);
-                }
-                if(sel) ImGui::SetItemDefaultFocus();
+        if(!g_configList.empty()){
+            std::vector<const char*> cfgPtrs;
+            cfgPtrs.reserve(g_configList.size());
+            for(auto& c : g_configList) cfgPtrs.push_back(c.c_str());
+            if(g_configListSel < 0 || g_configListSel >= (int)cfgPtrs.size()) g_configListSel = 0;
+            if(PidoCombo("Config list##cfg", "", &g_configListSel, (const char* const*)cfgPtrs.data(), (int)cfgPtrs.size())){
+                strncpy_s(g_configName, sizeof(g_configName), g_configList[g_configListSel].c_str(), _TRUNCATE);
             }
-            ImGui::EndCombo();
         }
-        ImGui::SameLine();
-        if(ImGui::Button("Refresh##cfg")){ RefreshConfigList(); }
-        if(PidoButton("Save", ImVec2(0, 0))){ if(SaveConfig(g_configName)) RefreshConfigList(); }
-        ImGui::SameLine();
-        if(PidoButton("Load", ImVec2(0, 0))) LoadConfig(g_configName);
-        ImGui::SameLine();
-        if(PidoButton("Reset", ImVec2(0, 0))) ApplyDefaults();
+        float s3 = MenuScale();
+        float btnW = (ImGui::GetContentRegionAvail().x - 8.f*s3) / 4.f;
+        if(PidoButton("Save",    ImVec2(btnW, 0))){ if(SaveConfig(g_configName)) RefreshConfigList(); }
+        ImGui::SameLine(0, 4.f*s3);
+        if(PidoButton("Load",    ImVec2(btnW, 0))) LoadConfig(g_configName);
+        ImGui::SameLine(0, 4.f*s3);
+        if(PidoButton("Refresh", ImVec2(btnW, 0))) RefreshConfigList();
+        ImGui::SameLine(0, 4.f*s3);
+        if(PidoButton("Reset",   ImVec2(btnW, 0))) ApplyDefaults();
         EndPidoChild();
     }
 
@@ -3770,9 +4109,9 @@ static void UpdateAndDrawParticles(float dt,float sw,float sh){
 
 static void DrawHitmarker(float sw, float sh){
     if(!g_hitmarkerEnabled || !g_lastHitmarkerTime) return;
-    DWORD elapsed = GetTickCount() - g_lastHitmarkerTime;
+    UINT64 elapsed = GetTickCount64() - g_lastHitmarkerTime;
     float durMs = g_hitmarkerDuration * 1000.f;
-    if(elapsed >= (DWORD)durMs) { g_lastHitmarkerTime = 0; return; }
+    if(elapsed >= (UINT64)durMs) { g_lastHitmarkerTime = 0; return; }
     ImDrawList* dl = ImGui::GetForegroundDrawList();
     if(!dl) return;
     float t = 1.f - (float)elapsed / durMs;
@@ -3794,9 +4133,9 @@ static void DrawHitmarker(float sw, float sh){
 
 static void DrawKillEffect(float sw, float sh){
     if(!g_killEffectEnabled || !g_lastKillEffectTime) return;
-    DWORD elapsed = GetTickCount() - g_lastKillEffectTime;
+    UINT64 elapsed = GetTickCount64() - g_lastKillEffectTime;
     float durMs = g_killEffectDuration * 1000.f;
-    if(elapsed >= (DWORD)durMs) { g_lastKillEffectTime = 0; return; }
+    if(elapsed >= (UINT64)durMs) { g_lastKillEffectTime = 0; return; }
     ImDrawList* dl = ImGui::GetForegroundDrawList();
     if(!dl) return;
     float t = 1.f - (float)elapsed / durMs;
@@ -3832,7 +4171,7 @@ static void DrawNotifications(float dt,float sw,float sh){
 
 // Telegram channel notification - menu-styled, 5 sec on load
 static void DrawTelegramNote(float sw, float sh){
-    DWORD now = GetTickCount();
+    UINT64 now = GetTickCount64();
     if(g_telegramNoteStart == 0) g_telegramNoteStart = now;
     if(now - g_telegramNoteStart > 5000) return;
     float fade = 1.f - Clampf((float)(now - g_telegramNoteStart) / 4500.f, 0.f, 1.f) * 0.3f;  // slight fade near end
@@ -3856,53 +4195,100 @@ static void DrawTelegramNote(float sw, float sh){
     dl->AddText(bold, 16.f, { pos.x + pad, pos.y + pad + t1.y + 8.f }, acc, line2);
 }
 
-// Pidoraise-style watermark: info bar with cheat | fps | time
 static void DrawWatermark(float sw){
     if(!g_watermarkEnabled)return;
-    ImDrawList*dl=ImGui::GetForegroundDrawList();if(!dl)return;
-    ImFont* wmFont=font::lexend_bold?font::lexend_bold:ImGui::GetFont();
-    ImGuiIO& io=ImGui::GetIO();
-    float fps=io.Framerate;
-    SYSTEMTIME st{};GetLocalTime(&st);
-    char fpsBuf[32], timeBuf[32];
-    std::snprintf(fpsBuf,sizeof(fpsBuf),"%.0ffps",fps);
-    std::snprintf(timeBuf,sizeof(timeBuf),"%02d:%02d",st.wHour,st.wMinute);
-    const char* cheatName="LitWare";
-    const char* items[]={cheatName, fpsBuf, timeBuf};
-    const int nItems=g_showFpsWatermark?3:2;
-    float totalW=0.f, maxH=0.f;
-    for(int i=0;i<nItems;++i){
-        ImVec2 s=wmFont->CalcTextSizeA(wmFont->LegacySize,FLT_MAX,0.f,items[i]);
-        totalW+=s.x; if(i<nItems-1) totalW+=wmFont->CalcTextSizeA(wmFont->LegacySize,FLT_MAX,0.f," | ").x;
-        if(s.y>maxH) maxH=s.y;
+    ImDrawList* dl = ImGui::GetForegroundDrawList(); if(!dl) return;
+    ImFont* fBold = font::lexend_bold ? font::lexend_bold : ImGui::GetFont();
+    ImFont* fReg  = font::lexend_regular ? font::lexend_regular : ImGui::GetFont();
+    ImGuiIO& io   = ImGui::GetIO();
+
+    SYSTEMTIME st{}; GetLocalTime(&st);
+    char timeBuf[16]; std::snprintf(timeBuf, sizeof(timeBuf), "%02d:%02d", st.wHour, st.wMinute);
+
+    const float fps    = io.Framerate;
+    const float padX   = 14.f;
+    const float padY   = 8.f;
+    const float rnd    = 8.f;
+    const float accentBarH = 2.f;
+    const float dotR   = 2.f;
+
+    const ImU32 colBg     = IM_COL32(10, 10, 12, 245);
+    const ImU32 colBorder = IM_COL32(38, 38, 48, 255);
+    const ImU32 colAccent = IM_COL32((int)(g_accentColor[0]*255),(int)(g_accentColor[1]*255),(int)(g_accentColor[2]*255),255);
+    const ImU32 colText   = IM_COL32(220, 225, 235, 255);
+    const ImU32 colDim    = IM_COL32(110, 115, 130, 255);
+    const ImU32 colDot    = IM_COL32(55, 58, 70, 255);
+
+    // FPS color: green >120, yellow >60, red <=60
+    ImU32 colFps;
+    if     (fps > 120.f) colFps = IM_COL32(80, 210, 120, 255);
+    else if(fps >  60.f) colFps = IM_COL32(230, 185, 60, 255);
+    else                 colFps = IM_COL32(220, 70, 70, 255);
+
+    // Measure text
+    const char* label = "LITWARE";
+    ImVec2 szLabel = fBold->CalcTextSizeA(fBold->LegacySize, FLT_MAX, 0.f, label);
+    char fpsBuf[16]; std::snprintf(fpsBuf, sizeof(fpsBuf), "%.0f", fps);
+    char fpsUnit[] = "fps";
+    ImVec2 szFpsNum  = fReg->CalcTextSizeA(fReg->LegacySize, FLT_MAX, 0.f, fpsBuf);
+    ImVec2 szFpsUnit = fReg->CalcTextSizeA(fReg->LegacySize, FLT_MAX, 0.f, fpsUnit);
+    ImVec2 szTime    = fReg->CalcTextSizeA(fReg->LegacySize, FLT_MAX, 0.f, timeBuf);
+
+    const float innerGap = 10.f;
+    const float dotDiam  = dotR * 2.f;
+
+    float totalW = szLabel.x;
+    if(g_showFpsWatermark){
+        totalW += innerGap + dotDiam + innerGap;   // dot
+        totalW += szFpsNum.x + 2.f + szFpsUnit.x; // "120fps"
+        totalW += innerGap + dotDiam + innerGap;   // dot
+        totalW += szTime.x;
     }
-    float pad=12.f, spacing=12.f;
-    float barW=totalW+pad*2.f+ (nItems>1 ? 2.f*spacing*(float)(nItems-1) : 0.f);  // totalW has items+sep; add spacing around seps
-    barW=(std::max)(barW,140.f);
-    float barH=maxH+pad*2.f;
-    ImVec2 pos{sw-barW-15.f,15.f};
-    ImVec2 size{barW,barH};
-    // Use accent color and theme-based styling
-    ImU32 bgFill=IM_COL32(11,11,11,255);
-    ImU32 stroke=IM_COL32(24,26,36,255);
-    ImU32 accent=IM_COL32((int)(g_accentColor[0]*255),(int)(g_accentColor[1]*255),(int)(g_accentColor[2]*255),255);
-    ImU32 textCol=IM_COL32(255,255,255,255);
-    dl->AddRectFilled(pos,{pos.x+size.x,pos.y+size.y},bgFill,6.f);
-    dl->AddRect(pos,{pos.x+size.x,pos.y+size.y},stroke,6.f,0,1.f);
-    float curX=pos.x+pad;
-    float centerY=pos.y+size.y*0.5f;
-    for(int i=0;i<nItems;++i){
-        ImVec2 ts=wmFont->CalcTextSizeA(wmFont->LegacySize,FLT_MAX,0.f,items[i]);
-        float y=centerY-ts.y*0.5f;
-        ImU32 col=(i==0)?accent:textCol;
-        dl->AddText(wmFont,wmFont->LegacySize,{curX,y},col,items[i]);
-        curX+=ts.x;
-        if(i<nItems-1){
-            curX+=spacing;
-            ImVec2 sepSz=wmFont->CalcTextSizeA(wmFont->LegacySize,FLT_MAX,0.f," | ");
-            dl->AddText(wmFont,wmFont->LegacySize,{curX,y},textCol," | ");
-            curX+=sepSz.x+spacing;
-        }
+
+    float barH = (std::max)({szLabel.y, szFpsNum.y, szTime.y}) + padY * 2.f;
+    float barW = totalW + padX * 2.f;
+    barW = (std::max)(barW, 120.f);
+
+    float x = sw - barW - 15.f;
+    float y = 15.f;
+
+    // Shadow
+    dl->AddRectFilled({x-3.f, y-3.f}, {x+barW+3.f, y+barH+3.f}, IM_COL32(0,0,0,60), rnd+2.f);
+
+    // Background + border
+    dl->AddRectFilled({x, y}, {x+barW, y+barH}, colBg, rnd);
+    dl->AddRect({x, y}, {x+barW, y+barH}, colBorder, rnd, 0, 1.f);
+
+    // Accent line bottom
+    dl->AddRectFilled({x+rnd, y+barH-accentBarH}, {x+barW-rnd, y+barH}, colAccent, accentBarH*0.5f);
+
+    // Draw contents
+    float cx   = x + padX;
+    float midY = y + barH * 0.5f;
+
+    // "LITWARE" in accent, bold
+    dl->AddText(fBold, fBold->LegacySize, {cx, midY - szLabel.y * 0.5f}, colAccent, label);
+    cx += szLabel.x;
+
+    if(g_showFpsWatermark){
+        // dot separator
+        cx += innerGap;
+        dl->AddCircleFilled({cx + dotR, midY}, dotR, colDot);
+        cx += dotDiam + innerGap;
+
+        // fps number (colored) + "fps" unit (dim)
+        dl->AddText(fReg, fReg->LegacySize, {cx, midY - szFpsNum.y * 0.5f}, colFps, fpsBuf);
+        cx += szFpsNum.x + 2.f;
+        dl->AddText(fReg, fReg->LegacySize, {cx, midY - szFpsUnit.y * 0.5f}, colDim, fpsUnit);
+        cx += szFpsUnit.x;
+
+        // dot separator
+        cx += innerGap;
+        dl->AddCircleFilled({cx + dotR, midY}, dotR, colDot);
+        cx += dotDiam + innerGap;
+
+        // time
+        dl->AddText(fReg, fReg->LegacySize, {cx, midY - szTime.y * 0.5f}, colText, timeBuf);
     }
 }
 
@@ -4470,7 +4856,7 @@ else if(g_espHealthPos==1){
     for(int i=0;i<g_esp_count;i++) drawOne(g_esp_players[i], 1.f);
     bool inCur[65]={false};
     for(int i=0;i<g_esp_count;i++) if(g_esp_players[i].ent_index>=0&&g_esp_players[i].ent_index<=64) inCur[g_esp_players[i].ent_index]=true;
-    DWORD now=GetTickCount();
+    UINT64 now=GetTickCount64();
     for(int j=1;j<=64;j++){
         if(inCur[j])continue;
         if(!g_esp_stale[j].valid)continue;
@@ -4575,16 +4961,15 @@ static void InitImGui(IDXGISwapChain*sc){
     g_bbFormat = desc.BufferDesc.Format;
     ID3D11Texture2D*bb=nullptr;
     if(FAILED(sc->GetBuffer(0,__uuidof(ID3D11Texture2D),(void**)&bb))||!bb)return;
-    sc->GetDevice(__uuidof(ID3D11Device),(void**)&g_device);
-    if(g_device){
-        g_device->GetImmediateContext(&g_context);
-        HRESULT hr = g_device->CreateRenderTargetView(bb,nullptr,&g_rtv);
-        if(FAILED(hr)){
-            DWORD now = GetTickCount();
-            if(now - g_lastRtvFail > 2000){
-                PushNotification("RTV create failed", IM_COL32(255,80,80,255));
-                g_lastRtvFail = now;
-            }
+    if(FAILED(sc->GetDevice(__uuidof(ID3D11Device),(void**)&g_device))||!g_device)return;
+    g_device->GetImmediateContext(&g_context);
+    if(!g_context){g_device->Release();g_device=nullptr;bb->Release();return;}
+    HRESULT hr = g_device->CreateRenderTargetView(bb,nullptr,&g_rtv);
+    if(FAILED(hr)){
+        UINT64 now = GetTickCount64();
+        if(now - g_lastRtvFail > 2000){
+            PushNotification("RTV create failed", IM_COL32(255,80,80,255));
+            g_lastRtvFail = now;
         }
     }
     bb->Release();
@@ -4595,7 +4980,18 @@ static void InitImGui(IDXGISwapChain*sc){
         return;
     }
     g_origWndProc=(WNDPROC)SetWindowLongPtrA(g_gameHwnd,GWLP_WNDPROC,(LONG_PTR)HookWndProc);
-    IMGUI_CHECKVERSION();ImGui::CreateContext();ImGuiIO&io=ImGui::GetIO();
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO&io=ImGui::GetIO();
+    if(!io.Fonts){
+        ImGui::DestroyContext();
+        SetWindowLongPtrA(g_gameHwnd,GWLP_WNDPROC,(LONG_PTR)g_origWndProc);
+        g_origWndProc=nullptr;
+        if(g_rtv){g_rtv->Release();g_rtv=nullptr;}
+        if(g_context){g_context->Release();g_context=nullptr;}
+        if(g_device){g_device->Release();g_device=nullptr;}
+        return;
+    }
     io.IniFilename=nullptr;io.ConfigFlags|=ImGuiConfigFlags_NoMouseCursorChange;
     io.ConfigErrorRecoveryEnableAssert=false;  // avoid crash on SetCursorPos/SetCursorScreenPos boundary (Pido)
     ImFontConfig fc{};fc.SizePixels=17.f;fc.FontDataOwnedByAtlas=false;
@@ -4680,7 +5076,7 @@ static void RequestUnload(){
 }
 static void RenderFrame(IDXGISwapChain*sc){
     if(g_unloading)return;
-    if(!g_firstFrame){DebugLog("[LitWare] first Present");g_firstFrame=true;g_telegramNoteStart=GetTickCount();}
+    if(!g_firstFrame){DebugLog("[LitWare] first Present");g_firstFrame=true;g_telegramNoteStart=GetTickCount64();}
     if(!g_imguiInitialized){InitImGui(sc);if(!g_imguiInitialized)return;}
     EnsureClientHooks();
     EnsureSceneHooks();
@@ -4698,7 +5094,7 @@ static void RenderFrame(IDXGISwapChain*sc){
             HRESULT hr = g_device->CreateRenderTargetView(bb,nullptr,&g_rtv);
             bb->Release();
             if(FAILED(hr)){
-                DWORD now = GetTickCount();
+                UINT64 now = GetTickCount64();
                 if(now - g_lastRtvFail > 2000){
                     PushNotification("RTV create failed", IM_COL32(255,80,80,255));
                     g_lastRtvFail = now;
@@ -4711,7 +5107,9 @@ static void RenderFrame(IDXGISwapChain*sc){
     if(GetAsyncKeyState(VK_END)&1){RequestUnload();return;}
     if(!g_safeMode){
         BuildESPData();BuildSpectatorList();ProcessHitEvents();UpdateBombInfo();UpdateSoundPings();
-        RunNoFlash();RunNoSmoke();RunGlow();RunRadarHack();RunSkinChanger();RunBHop();RunFOVChanger();
+        RunNoFlash();RunNoSmoke();RunGlow();RunRadarHack();RunSkinChanger();
+        RunBHop();
+        RunFOVChanger();
         RunAutostop();RunRCS();RunStrafeHelper();RunTriggerBot();ReleaseTriggerAttack();RunAimbot();RunDoubleTap();
     }else{g_esp_count=0;g_esp_oof_count=0;}
     ImGui_ImplDX11_NewFrame();ImGui_ImplWin32_NewFrame();ImGui::NewFrame();
@@ -4758,7 +5156,7 @@ HRESULT __stdcall HookPresent(IDXGISwapChain*sc,UINT sync,UINT flags){
         if(g_imguiInitialized){
             __try { ImGui::EndFrame(); } __except(EXCEPTION_EXECUTE_HANDLER){}
         }
-        DWORD now = GetTickCount();
+        UINT64 now = GetTickCount64();
         if(now - s_lastCrashTime > 5000){
             s_lastCrashTime = now;
             PushNotification("Crash caught - safe mode. Enable ESP to retry.", IM_COL32(255,100,80,255));
@@ -4934,7 +5332,7 @@ static void EnsureSceneHooks(){
         g_sceneHooksReady = true;
         return;
     }
-    DWORD now = GetTickCount();
+    UINT64 now = GetTickCount64();
     if(now - g_lastSceneHookAttempt < 2000) return;
     g_lastSceneHookAttempt = now;
     HMODULE scene = GetModuleHandleA("scenesystem.dll");
@@ -4983,11 +5381,13 @@ static void EnsureSceneHooks(){
 
 static void EnsureClientHooks(){
     if(g_clientHooksReady && g_fpLegsHooked) return;
-    DWORD now = GetTickCount();
+    UINT64 now = GetTickCount64();
     if(now - g_lastClientHookAttempt < 2000) return;
     g_lastClientHookAttempt = now;
+    EnsureModules();
     HMODULE client = GetModuleHandleA("client.dll");
     if(!client) return;
+    uintptr_t clientBase = (uintptr_t)client;
     static const char PAT_FOV[] = "\xE8\x00\x00\x00\x00\xF3\x0F\x11\x45\x00\x48\x8B\x5C\x24";
     static const char MSK_FOV[] = "x????xxxx?xxx";
     static const char PAT_FP_LEGS[] = "\x40\x55\x53\x56\x41\x56\x41\x57\x48\x8D\xAC\x24\x00\x00\x00\x00\x48\x81\xEC\x00\x00\x00\x00\xF2\x0F\x10\x42";
