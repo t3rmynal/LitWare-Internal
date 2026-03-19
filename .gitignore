@@ -36,7 +36,6 @@ old/
 examples-old/
 *.tmp
 litware-menu.exe
-.claude/
 
 # електрон
 node_modules/
