@@ -289,6 +289,15 @@ void ElectronBridge_SendNotification(const char* text) {
     s_hasNotif.store(true);
 }
 
+bool ElectronBridge_IsMenuFocused(void) {
+    if (s_electronPid == 0) return false;
+    HWND fg = GetForegroundWindow();
+    if (!fg) return false;
+    DWORD pid = 0;
+    GetWindowThreadProcessId(fg, &pid);
+    return pid == s_electronPid;
+}
+
 void ElectronBridge_SendVisibility(bool visible) {
     s_pendingVisibility = visible ? 1 : 0;
 }
@@ -407,4 +416,14 @@ void ElectronBridge_Stop(void) {
     if (s_thread.joinable())
         s_thread.join();
     s_apply = nullptr;
+}
+
+void ElectronBridge_CloseMenu(void) {
+    if (s_electronPid == 0) return;
+    HANDLE h = OpenProcess(PROCESS_TERMINATE, FALSE, s_electronPid);
+    if (h) {
+        TerminateProcess(h, 0);
+        CloseHandle(h);
+    }
+    s_electronPid = 0;
 }

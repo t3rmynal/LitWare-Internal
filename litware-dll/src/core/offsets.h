@@ -7,34 +7,34 @@
 
 namespace offsets {
 
-    // ???????????
+    // Module: client.dll (cs2-dumper 2026-03-19)
     namespace client {
-        constexpr uintptr_t dwCSGOInput              = 0x2318FC0;
-        constexpr uintptr_t dwEntityList             = 0x24AE268;
-        constexpr uintptr_t dwGlobalVars             = 0x205D5C0;
-        constexpr uintptr_t dwLocalPlayerController  = 0x22F3178;
-        constexpr uintptr_t dwLocalPlayerPawn        = 0x2068B60;
-        constexpr uintptr_t dwViewAngles             = 0x2319648;
-        constexpr uintptr_t dwViewMatrix             = 0x230EF20;
-        constexpr uintptr_t dwGlowManager            = 0x2309CE8;
+        constexpr uintptr_t dwCSGOInput              = 0x2319FC0;
+        constexpr uintptr_t dwEntityList             = 0x24AF268;
+        constexpr uintptr_t dwGlobalVars             = 0x205E5C0;
+        constexpr uintptr_t dwLocalPlayerController  = 0x22F4188;
+        constexpr uintptr_t dwLocalPlayerPawn        = 0x2069B50;
+        constexpr uintptr_t dwViewAngles             = 0x231A648;
+        constexpr uintptr_t dwViewMatrix             = 0x230FF20;
+        constexpr uintptr_t dwGlowManager            = 0x230ACE8;
     }
 
-    // ???????????
+    // Module: engine2.dll
     namespace engine2 {
-        constexpr uintptr_t dwWindowWidth  = 0x90C8D8;
-        constexpr uintptr_t dwWindowHeight = 0x90C8DC;
+        constexpr uintptr_t dwWindowWidth  = 0x90C8F0;
+        constexpr uintptr_t dwWindowHeight = 0x90C8F4;
     }
 
-    // ???????????
+    // Module: client.dll buttons
     namespace buttons {
-        constexpr uintptr_t attack  = 0x20618F0;
-        constexpr uintptr_t attack2 = 0x2061980;
-        constexpr uintptr_t forward = 0x2061A10;
-        constexpr uintptr_t back    = 0x2061AA0;
-        constexpr uintptr_t left    = 0x2061B30;
-        constexpr uintptr_t right   = 0x2061BC0;
-        constexpr uintptr_t jump    = 0x2061E00;
-        constexpr uintptr_t duck    = 0x2061E90;
+        constexpr uintptr_t attack  = 0x20628F0;
+        constexpr uintptr_t attack2 = 0x2062980;
+        constexpr uintptr_t forward = 0x2062B30;
+        constexpr uintptr_t back    = 0x2062BC0;
+        constexpr uintptr_t left    = 0x2062C50;
+        constexpr uintptr_t right   = 0x2062CE0;
+        constexpr uintptr_t jump    = 0x2062E00;
+        constexpr uintptr_t duck    = 0x2062E90;
     }
 
     // ???????????

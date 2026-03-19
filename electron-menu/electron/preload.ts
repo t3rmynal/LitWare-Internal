@@ -24,22 +24,31 @@ const lastValues: Record<string, unknown> = {}
 function connect(): void {
   try {
     socket = new WebSocket(WS_URL)
-    socket.onopen = () => { console.log('[litware] подключились к dll') }
+    socket.onopen = () => {
+      console.log('[litware] подключились к dll')
+      ipcRenderer.send('bridge-connected')
+    }
     socket.onmessage = (e: MessageEvent) => {
       try {
         const data = JSON.parse(e.data as string) as { key: string; value: unknown }
         lastValues[data.key] = data.value
         messageListeners.forEach(cb => cb(data.key, data.value))
-        // overlay_visible от c++ → сообщаем main process чтобы показал/скрыл окно
+        // overlay_visible от c++ → показать/скрыть overlay
         if (data.key === 'overlay_visible') {
           const visible = data.value === true || data.value === 'true'
           ipcRenderer.send('overlay-visible', visible)
+        }
+        // menu_open от c++ → переключить меню (INSERT нажат в игре)
+        if (data.key === 'menu_open') {
+          const open = data.value === true || data.value === 'true'
+          ipcRenderer.send('menu-visibility', open)
         }
       } catch { console.warn('[litware] не удалось распарсить:', e.data) }
     }
     socket.onerror = () => { console.log('[litware] dll недоступна, переподключение...') }
     socket.onclose = () => {
       socket = null
+      ipcRenderer.send('bridge-disconnected')
       if (reconnectTimer) clearTimeout(reconnectTimer)
       reconnectTimer = setTimeout(connect, RECONNECT_DELAY)
     }
@@ -60,7 +69,7 @@ function onMessage(cb: (key: string, value: unknown) => void): () => void {
   return () => { messageListeners = messageListeners.filter(l => l !== cb) }
 }
 
-// main toggles menu via globalShortcut → сообщаем react + шлём в dll
+// main получил menu_open от C++ и вызвал toggleMenu — синхронизируем react
 ipcRenderer.on('toggle-menu', (_, open: boolean) => {
   lastValues['menu_open'] = open
   messageListeners.forEach(cb => cb('menu_open', open))

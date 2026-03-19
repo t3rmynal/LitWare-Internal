@@ -65,12 +65,17 @@ const SECTION_KEY_MAP: Record<string, Record<string, string>> = {
     skyColor: 'sky_color',
     fovEnabled: 'fov_enabled',
     fovValue: 'fov_value',
+    handsColorEnabled: 'hands_color_enabled',
+    handsColor: 'hands_color',
     particlesEnabled: 'particles_world',
     radarEnabled: 'radar_ingame',
     bombTimerEnabled: 'bomb_timer',
     spectatorListEnabled: 'spectator_list',
     watermarkEnabled: 'watermark',
     keybindsEnabled: 'keybinds_enabled'
+  },
+  skins: {
+    applySkins: 'skin_enabled'
   },
   misc: {
     bhopEnabled: 'bhop',
@@ -99,7 +104,7 @@ export function pushSectionToDll (section: string, value: Record<string, unknown
     const dllKey = map[camelKey]
     if (!dllKey) continue
     let v = toStr(val)
-    if ((camelKey === 'glowEnemyColor' || camelKey === 'glowTeamColor' || camelKey === 'enemyColor' || camelKey === 'teamColor' || camelKey === 'skyColor' || camelKey === 'accentColor') && typeof val === 'string') {
+    if ((camelKey === 'glowEnemyColor' || camelKey === 'glowTeamColor' || camelKey === 'enemyColor' || camelKey === 'teamColor' || camelKey === 'skyColor' || camelKey === 'accentColor' || camelKey === 'handsColor') && typeof val === 'string') {
       v = hexToConfigColor(val)
     }
     window.litware.send(dllKey, v)

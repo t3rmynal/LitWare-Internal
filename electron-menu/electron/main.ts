@@ -1,8 +1,11 @@
-import { app, BrowserWindow, ipcMain, screen, globalShortcut } from 'electron'
+import { app, BrowserWindow, ipcMain, screen } from 'electron'
 import { join } from 'path'
 
 let win: BrowserWindow | null = null
 let menuOpen = false
+let quitTimer: ReturnType<typeof setTimeout> | null = null
+let hasConnectedOnce = false
+let bridgeHasConnectedOnce = false
 
 const isDev = !app.isPackaged
 
@@ -41,7 +44,7 @@ function createWindow() {
   win.on('closed', () => { win = null })
 }
 
-// переключаем меню — вызывается и из globalShortcut и из WS
+// переключаем меню — C++ шлёт menu_open через WebSocket, preload → menu-visibility
 function toggleMenu(open: boolean) {
   if (!win) return
   menuOpen = open
@@ -60,12 +63,9 @@ function toggleMenu(open: boolean) {
 app.whenReady().then(() => {
   createWindow()
 
-  // insert перехватываем здесь — не зависит от ws
-  globalShortcut.register('Insert', () => {
-    toggleMenu(!menuOpen)
-    // сообщаем c++ через ws (если подключён)
-    win?.webContents.send('send-to-dll', 'menu_open', menuOpen ? 'true' : 'false')
-  })
+  // INSERT обрабатывает только C++ (render_hook), шлёт menu_open через WebSocket
+  // Electron получает через preload -> menu-visibility IPC
+  // globalShortcut не используем — двойной toggle ломал закрытие
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
@@ -73,8 +73,23 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', () => {
-  globalShortcut.unregisterAll()
   if (process.platform !== 'darwin') app.quit()
+})
+
+// cs2 закрыт — WebSocket разорван; если не переподключились за 5 сек — выходим
+const BRIDGE_QUIT_DELAY_MS = 5000
+ipcMain.on('bridge-disconnected', () => {
+  if (quitTimer) clearTimeout(quitTimer)
+  quitTimer = setTimeout(() => {
+    quitTimer = null
+    app.quit()
+  }, BRIDGE_QUIT_DELAY_MS)
+})
+ipcMain.on('bridge-connected', () => {
+  if (quitTimer) {
+    clearTimeout(quitTimer)
+    quitTimer = null
+  }
 })
 
 // перемещение окна через драг

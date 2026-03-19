@@ -3728,12 +3728,23 @@ static void RenderFrame(IDXGISwapChain*sc){
             }
         }if(!g_rtv)return;
     }
-    bool isForeground = (g_gameHwnd && GetForegroundWindow() == g_gameHwnd);
-    bool overlayVisible = isForeground || g_menuOpen;
+    bool gameFocused = (g_gameHwnd && GetForegroundWindow() == g_gameHwnd);
+    bool menuFocused = ElectronBridge_IsMenuFocused();
+    bool overlayVisible = gameFocused || menuFocused;
     static bool s_wasVisible = true;
-    if (overlayVisible != s_wasVisible) {
-        s_wasVisible = overlayVisible;
-        ElectronBridge_SendVisibility(overlayVisible);
+    static UINT64 s_pendingHideTick = 0;
+    if (overlayVisible) {
+        s_pendingHideTick = 0;
+        if (!s_wasVisible) { s_wasVisible = true; ElectronBridge_SendVisibility(true); }
+    } else {
+        if (s_wasVisible) {
+            if (!s_pendingHideTick) s_pendingHideTick = GetTickCount64();
+            else if ((GetTickCount64() - s_pendingHideTick) >= 150) {
+                s_pendingHideTick = 0;
+                s_wasVisible = false;
+                ElectronBridge_SendVisibility(false);
+            }
+        }
     }
     if (!overlayVisible) return;
     if(GetAsyncKeyState(VK_INSERT)&1){
@@ -4076,6 +4087,7 @@ bool Initialize(){
     if(MH_EnableHook(presentAddr)!=MH_OK){
         DebugLog("[LitWare] MH_EnableHook failed");MH_Uninitialize();return false;
     }
+    ElectronBridge_SetApply(ApplyConfigKeyFromElectron);
     DebugLog("[LitWare] Present hook installed");return true;
 }
 void Shutdown(){RequestUnload();}

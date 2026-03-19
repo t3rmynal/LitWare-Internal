@@ -9,6 +9,9 @@ void entry() {
     BootstrapLog("[litware] entry() start");
     DebugLog("[litware] entry() start");
 
+    // запускаем electron раньше всего, пусть грузится в фоне
+    ElectronBridge_LaunchMenu();
+
     // ждём overlay renderer (steam)
     for (int i = 0; i < 50; ++i) {
         if (GetModuleHandleA("gameoverlayrenderer64.dll") != nullptr)
@@ -35,12 +38,18 @@ void entry() {
     BootstrapLog("[litware] SUCCESS - hook active, INSERT for menu");
     DebugLog("[litware] render_hook::Initialize OK - hook active");
 
+    BootstrapLog("[litware] запускаем WS сервер на порту 37373");
     ElectronBridge_Start(nullptr);
 
+    // даём electron примерно 2 сек чтобы подключился к WS
+    BootstrapLog("[litware] ожидаем подключение electron к WS...");
+    Sleep(2000);
+
     // уведомление в electron после успешного инита
+    BootstrapLog("[litware] отправляем уведомление");
     ElectronBridge_SendNotification("Cheat injected successfully! Enjoy.");
-    // даём electron секунду подключиться к ws, потом поднимаем для тоста
-    Sleep(1000);
+    Sleep(500);
+    BootstrapLog("[litware] поднимаем окно в фокус");
     ElectronBridge_BringToFront();
 
     bypass::PatchSecureServerFlag();
