@@ -283,7 +283,7 @@ static std::deque<LogEntry>g_logs;
 static DWORD g_lastSoundPingTick[ESP_MAX_PLAYERS + 1] = {};
 static bool g_visMap[ESP_MAX_PLAYERS + 1] = {};
 // кеш сущностей 80мс чтобы не мигали
-// static ESPEntry g_esp_stale[ESP_MAX_PLAYERS + 1] = {};
+static ESPEntry g_esp_stale[ESP_MAX_PLAYERS + 1] = {};
 static UINT64 g_esp_stale_tick[ESP_MAX_PLAYERS + 1] = {};
 static UINT64 g_visLastTrueTick[ESP_MAX_PLAYERS + 1] = {};
 static constexpr DWORD ESP_STALE_MS = 80;
