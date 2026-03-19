@@ -35,6 +35,8 @@ void entry() {
     BootstrapLog("[litware] SUCCESS - hook active, INSERT for menu");
     DebugLog("[litware] render_hook::Initialize OK - hook active");
 
+    ElectronBridge_Start(nullptr);
+
     // уведомление в electron после успешного инита
     ElectronBridge_SendNotification("Cheat injected successfully! Enjoy.");
     // даём electron секунду подключиться к ws, потом поднимаем для тоста

@@ -3652,7 +3652,7 @@ static void InitImGui(IDXGISwapChain*sc){
         return;
     }
     g_imguiInitialized=true;DebugLog("[LitWare] ImGui OK");
-    ElectronBridge_Start(ApplyConfigKeyFromElectron);
+    ElectronBridge_SetApply(ApplyConfigKeyFromElectron);
     if(!g_menuLaunched){ g_menuLaunched=true; ElectronBridge_LaunchMenu(); }
 }
 
@@ -3729,14 +3729,13 @@ static void RenderFrame(IDXGISwapChain*sc){
         }if(!g_rtv)return;
     }
     bool isForeground = (g_gameHwnd && GetForegroundWindow() == g_gameHwnd);
-    static bool s_wasForeground = true;
-    if (isForeground != s_wasForeground) {
-        s_wasForeground = isForeground;
-        ElectronBridge_SendVisibility(isForeground);
+    bool overlayVisible = isForeground || g_menuOpen;
+    static bool s_wasVisible = true;
+    if (overlayVisible != s_wasVisible) {
+        s_wasVisible = overlayVisible;
+        ElectronBridge_SendVisibility(overlayVisible);
     }
-    if (!isForeground) {
-        return;
-    }
+    if (!overlayVisible) return;
     if(GetAsyncKeyState(VK_INSERT)&1){
         g_menuOpen=!g_menuOpen;
         if(g_menuOpen && !g_menuLaunched){ g_menuLaunched=true; ElectronBridge_LaunchMenu(); }

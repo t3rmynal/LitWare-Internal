@@ -2,8 +2,9 @@
 
 typedef void (*ElectronBridgeApplyFn)(const char* key, const char* value);
 
-// запускает websocket сервер и поток обработки
+// запускает websocket сервер (apply_fn может быть nullptr, задать потом через SetApply)
 void ElectronBridge_Start(ElectronBridgeApplyFn apply_fn);
+void ElectronBridge_SetApply(ElectronBridgeApplyFn apply_fn);
 
 // шлёт состояние меню (открыто/закрыто)
 void ElectronBridge_SendMenuOpen(bool open);

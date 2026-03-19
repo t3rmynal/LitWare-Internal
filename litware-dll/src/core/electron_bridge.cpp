@@ -265,12 +265,16 @@ static void ServerThread() {
 }
 
 void ElectronBridge_Start(ElectronBridgeApplyFn apply_fn) {
-    if (!apply_fn) return;
     s_apply = apply_fn;
+    if (s_thread.joinable()) return;
     s_stop = false;
     s_pendingMenuOpen = -1;
     s_menuOpenState = 0;
     s_thread = std::thread(ServerThread);
+}
+
+void ElectronBridge_SetApply(ElectronBridgeApplyFn apply_fn) {
+    s_apply = apply_fn;
 }
 
 void ElectronBridge_SendMenuOpen(bool open) {
