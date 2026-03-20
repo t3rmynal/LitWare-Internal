@@ -1,6 +1,5 @@
 #include <Windows.h>
 #include "debug.h"
-#include "core/electron_bridge.h"
 
 HMODULE g_thisModule = nullptr;
 
@@ -33,8 +32,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved) {
     case DLL_PROCESS_DETACH:
         BootstrapLog("[litware] DLL_PROCESS_DETACH");
         DebugLog("[litware] DLL_PROCESS_DETACH");
-        ElectronBridge_CloseMenu();
-        ElectronBridge_Stop();
         break;
     }
     return TRUE;
