@@ -100,4 +100,4 @@ For Electron menu: `cd electron-menu` → `npm run dist` → place `litware-menu
 
 ## License
 
-GPL-3.0. Educational only. VAC bans possible.
+MIT. Educational only. VAC bans possible.
